@@ -13,7 +13,7 @@ public class StarlingMainBase extends MainBase {
 
     private var _mainClass: Class;
 
-    protected var _starling: Starling;
+    private var _starling: Starling;
 
     public function StarlingMainBase(mainClass: Class, scale:String = null, align:String = null) {
         _mainClass = mainClass;
