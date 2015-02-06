@@ -27,6 +27,8 @@ public class MainBase extends Sprite {
 
         stage.scaleMode = _defaultScale;
         stage.align = _defaultAlign;
+
+        initialize();
     }
 
     protected function initialize():void {
