@@ -16,13 +16,9 @@ public class StarlingMainBase extends MainBase {
     protected var _starling: Starling;
 
     public function StarlingMainBase(mainClass: Class, scale:String = null, align:String = null) {
-        super(scale, align);
+        _mainClass = mainClass;
 
-        if (mainClass is IStartable) {
-            _mainClass = mainClass;
-        } else {
-            throw new Error(mainClass + " must implement " + IStartable);
-        }
+        super(scale, align);
     }
 
     override protected function initialize():void {
@@ -58,7 +54,11 @@ public class StarlingMainBase extends MainBase {
     private function handleRootCreated(event: Event,  app: IStartable):void {
         _starling.removeEventListener(Event.ROOT_CREATED, handleRootCreated);
 
-        app.start();
+        if (app) {
+            app.start();
+        } else {
+            throw new Error(_mainClass + " must implement " + IStartable)
+        }
         _starling.start();
     }
 }
