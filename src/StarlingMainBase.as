@@ -37,18 +37,8 @@ public class StarlingMainBase extends MainBase {
         var viewport: Rectangle = mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 
         _starling = new Starling(_mainClass, stage, viewport, null, Context3DRenderMode.AUTO);
-        _starling.showStats = true;
 
         _starling.addEventListener(Event.ROOT_CREATED, handleRootCreated);
-    }
-
-    protected function setSize(width: int, height: int):void {
-        if (_starling) {
-            _starling.stage.stageWidth = width;
-            _starling.stage.stageHeight = height;
-        } else {
-            throw new Error("Starling is not instantiated yet. Wait for initialize().");
-        }
     }
 
     private function handleRootCreated(event: Event,  app: IStartable):void {
@@ -60,6 +50,24 @@ public class StarlingMainBase extends MainBase {
             throw new Error(_mainClass + " must implement " + IStartable)
         }
         _starling.start();
+    }
+
+
+
+    protected function get starling():Starling {
+        if (!_starling) {
+            throw new Error("Starling is not instantiated yet. Wait for initialize().");
+        }
+        return _starling;
+    }
+
+    protected function set showStats(value: Boolean):void {
+        starling.showStats = value;
+    }
+
+    protected function setSize(width: int, height: int):void {
+        starling.stage.stageWidth = width;
+        starling.stage.stageHeight = height;
     }
 }
 }
