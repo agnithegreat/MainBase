@@ -8,9 +8,9 @@ import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-public class AtlasBuilder {
+public class TextureAtlasBuilder {
 
-    public static function buildAtlas(name: String, textureMap: Object, padding: int = 2, isNearest2N: Boolean = true):AtlasData {
+    public static function buildTextureAtlas(textureMap: Object, padding: int = 2, isNearest2N: Boolean = true):AtlasData {
         var rectMap: Object = {};
 
         for (var key: String in textureMap) {
@@ -34,7 +34,7 @@ public class AtlasBuilder {
             extrudeTexture(atlas, placeRect);
         }
 
-        return new AtlasData(name, atlas, rectMap);
+        return new AtlasData(atlas, rectMap);
     }
 
     private static function extrudeTexture(atlas: BitmapData, rect: Rectangle):void {
@@ -55,7 +55,7 @@ public class AtlasBuilder {
 
     public static function getTextureXml(atlas: AtlasData, path: String = null):XML {
         var xml: XML = <TextureAtlas />;
-        xml.@imagePath = path ? path : atlas.name;
+        xml.@imagePath = path ? path : "";
 
         for (var key: String in atlas.map) {
             var subTexture: XML = <SubTexture />;

@@ -13,8 +13,8 @@ public class FontData extends AtlasData {
         return _xml;
     }
 
-    public function FontData(name: String, texture:BitmapData, map:Object, xml: XML) {
-        super(name, texture, map);
+    public function FontData(texture:BitmapData, map:Object, xml: XML) {
+        super(texture, map);
 
         _xml = xml;
     }
