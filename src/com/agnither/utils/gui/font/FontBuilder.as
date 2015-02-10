@@ -18,7 +18,7 @@ import flash.text.engine.TextLine;
 
 public class FontBuilder {
 
-    public static function buildFontFromChars(text: String, font: String, size: int, color: uint, bold: Boolean):FontData {
+    public static function buildFontFromChars(text: String, font: String, size: int, color: uint, bold: Boolean, advance: int = 0):FontData {
         var fontDescription: FontDescription = new FontDescription(font, bold ? FontWeight.BOLD : FontWeight.NORMAL);
         var elementFormat: ElementFormat = new ElementFormat(fontDescription, size, color);
         var textElement: TextElement = new TextElement(text, elementFormat);
@@ -49,8 +49,8 @@ public class FontBuilder {
 
             charBounds.x = Math.round(charBounds.x);
             charBounds.y = Math.round(charBounds.y);
-            charBounds.width = Math.round(charBounds.width);
-            charBounds.height = Math.round(charBounds.height);
+            charBounds.width = Math.floor(charBounds.width);
+            charBounds.height = Math.floor(charBounds.height);
 
             var charData: CharData = new CharData(charTexture, charBounds);
             charsMap[code] = charData;
@@ -89,7 +89,7 @@ public class FontBuilder {
             char.@height = rect.height;
             char.@xoffset = charData.bounds.x;
             char.@yoffset = charData.bounds.y;
-            char.@xadvance = charData.bounds.width;
+            char.@xadvance = charData.bounds.width + advance;
             chars.appendChild(char);
         }
         xml.appendChild(chars);
