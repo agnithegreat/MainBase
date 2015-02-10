@@ -32,6 +32,7 @@ public class FontBuilder {
 
 
         var metrics: TextLineMetrics = textField.getLineMetrics(0);
+        trace(metrics.ascent, metrics.descent, metrics.leading);
         var baseLine: int = metrics.ascent - metrics.descent;
 
         var text: String = textField.text + " ";
@@ -52,7 +53,7 @@ public class FontBuilder {
             textureMap[key] = getCharTexture(tf);
         }
 
-        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false);
+        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false, true);
 
         var xml: XML = <font />;
 
@@ -81,7 +82,7 @@ public class FontBuilder {
             char.@width = rect.width;
             char.@height = rect.height;
             char.@xoffset = -2;
-            char.@yoffset = -9;
+            char.@yoffset = metrics.ascent-metrics.descent;
             char.@xadvance = rect.width-4;
             chars.appendChild(char);
         }
