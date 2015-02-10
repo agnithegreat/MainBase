@@ -6,65 +6,69 @@ import com.agnither.utils.gui.atlas.AtlasData;
 import com.agnither.utils.gui.atlas.TextureAtlasBuilder;
 
 import flash.display.BitmapData;
+import flash.geom.Matrix;
+import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.text.AntiAliasType;
-import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
-import flash.text.TextFormat;
-import flash.text.TextLineMetrics;
+import flash.text.engine.ElementFormat;
+import flash.text.engine.FontDescription;
+import flash.text.engine.FontWeight;
+import flash.text.engine.TextBlock;
+import flash.text.engine.TextElement;
+import flash.text.engine.TextLine;
 
 public class FontBuilder {
 
-    public static function buildFontFromChars(chars: String, font: String, size: int, color: uint, bold: Boolean):FontData {
-        var tf: TextField = new TextField();
-        tf.autoSize = TextFieldAutoSize.LEFT;
-        tf.defaultTextFormat = new TextFormat(font, size, color, bold);
-        tf.text = chars;
-        return buildFontFromTextField(tf);
-    }
+    public static function buildFontFromChars(text: String, font: String, size: int, color: uint, bold: Boolean):FontData {
+        var fontDescription: FontDescription = new FontDescription(font, bold ? FontWeight.BOLD : FontWeight.NORMAL);
+        var elementFormat: ElementFormat = new ElementFormat(fontDescription, size, color);
+        var textElement: TextElement = new TextElement(text, elementFormat);
 
-    public static function buildFontFromTextField(textField: TextField):FontData {
-        var format: TextFormat = textField.defaultTextFormat;
-        format.leftMargin = 0;
-        format.rightMargin = 0;
-        var fontName: String = format.font;
-        var fontSize: Object = format.size;
+        var textBlock: TextBlock = new TextBlock();
+        textBlock.content = textElement;
 
+        var textLine: TextLine = textBlock.createTextLine();
+        var baseline: Number = textLine.ascent;
 
-        var metrics: TextLineMetrics = textField.getLineMetrics(0);
-        trace(metrics.ascent, metrics.descent, metrics.leading);
-        var baseLine: int = metrics.ascent - metrics.descent;
-
-        var text: String = textField.text + " ";
+        var texture: BitmapData = new BitmapData(Math.ceil(textLine.width), Math.ceil(textLine.height), true, 0);
+        texture.draw(textLine, new Matrix(1, 0, 0, 1, 0, Math.ceil(baseline)));
 
         var charsMap: Object = {};
-        for (var i:int = 0; i < text.length; i++) {
-            var code: Number = text.charCodeAt(i);
-            charsMap[code] = text.charAt(i);
-        }
-
         var textureMap: Object = {};
-        for (var key: String in charsMap) {
-            var tf: TextField = new TextField();
-            tf.autoSize = TextFieldAutoSize.LEFT;
-            tf.antiAliasType = AntiAliasType.ADVANCED;
-            tf.defaultTextFormat = format;
-            tf.text = charsMap[key];
-            textureMap[key] = getCharTexture(tf);
+        var lastX: Number = 0;
+        for (var i:int = 0; i < textLine.atomCount; i++) {
+            var code: int = text.charCodeAt(i);
+            var charBounds: Rectangle = textLine.getAtomBounds(i);
+            charBounds.y = 0;
+
+            var charTexture: BitmapData = new BitmapData(Math.ceil(charBounds.width), Math.ceil(charBounds.height), true, 0);
+            charTexture.copyPixels(texture, charBounds, new Point());
+
+            charBounds.x -= lastX;
+            charBounds.y = textLine.descent * 0.6;
+            lastX += charBounds.width;
+
+            charBounds.x = Math.round(charBounds.x);
+            charBounds.y = Math.round(charBounds.y);
+            charBounds.width = Math.round(charBounds.width);
+            charBounds.height = Math.round(charBounds.height);
+
+            var charData: CharData = new CharData(charTexture, charBounds);
+            charsMap[code] = charData;
+            textureMap[code] = charTexture;
         }
 
-        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false, true);
+        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false);
 
         var xml: XML = <font />;
 
         var info: XML = <info />;
-        info.@face = fontName;
-        info.@size = fontSize;
+        info.@face = font;
+        info.@size = size;
         xml.appendChild(info);
 
         var common: XML = <common />;
-        common.@lineHeight = fontSize;
-//        common.@base = baseLine-20;
+        common.@lineHeight = size;
+//        common.@base = baseline;
         xml.appendChild(common);
 
         var pages: XML = <pages />;
@@ -73,28 +77,24 @@ public class FontBuilder {
         xml.appendChild(pages);
 
         var chars: XML = <chars />;
-        for (key in charsMap) {
-            var rect: Rectangle = atlas.map[key];
+        for (code in charsMap) {
+            charData = charsMap[code];
+            var rect: Rectangle = atlas.map[code];
+
             var char: XML = <char />;
-            char.@id = key;
+            char.@id = code;
             char.@x = rect.x;
             char.@y = rect.y;
             char.@width = rect.width;
             char.@height = rect.height;
-            char.@xoffset = -2;
-            char.@yoffset = metrics.ascent-metrics.descent;
-            char.@xadvance = rect.width-4;
+            char.@xoffset = charData.bounds.x;
+            char.@yoffset = charData.bounds.y;
+            char.@xadvance = charData.bounds.width;
             chars.appendChild(char);
         }
         xml.appendChild(chars);
 
         return new FontData(atlas.texture, atlas.map, xml);
-    }
-
-    private static function getCharTexture(char: TextField):BitmapData {
-        var texture:BitmapData = new BitmapData(char.width, char.height, true, 0);
-        texture.draw(char);
-        return texture;
     }
 }
 }
