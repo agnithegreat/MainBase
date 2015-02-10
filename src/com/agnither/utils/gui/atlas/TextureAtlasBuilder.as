@@ -5,12 +5,16 @@ package com.agnither.utils.gui.atlas {
 import com.dragonbones.core.utils.TextureUtil;
 
 import flash.display.BitmapData;
+
+import flash.display.BitmapData;
+import flash.display.Shape;
+import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
 public class TextureAtlasBuilder {
 
-    public static function buildTextureAtlas(textureMap: Object, padding: int = 2, isNearest2N: Boolean = true):AtlasData {
+    public static function buildTextureAtlas(textureMap: Object, padding: int = 2, isNearest2N: Boolean = true, extrude: Boolean = true, drawBorders: Boolean = false):AtlasData {
         var rectMap: Object = {};
 
         for (var key: String in textureMap) {
@@ -31,10 +35,26 @@ public class TextureAtlasBuilder {
             placeRect = rectMap[key];
 
             atlas.copyPixels(texture, textureRect, placeRect.topLeft);
-            extrudeTexture(atlas, placeRect);
+
+            if (extrude) {
+                extrudeTexture(atlas, placeRect);
+            }
+
+            if (drawBorders) {
+                drawBorder(atlas, placeRect);
+            }
         }
 
         return new AtlasData(atlas, rectMap);
+    }
+
+    private static function drawBorder(atlas: BitmapData, rect: Rectangle):void {
+        var border: Shape = new Shape();
+        border.graphics.beginFill(0xFF0000);
+        border.graphics.drawRect(0,0,rect.width, rect.height);
+        border.graphics.drawRect(1,1,rect.width-2, rect.height-2);
+
+        atlas.draw(border, new Matrix(1,0,0,1, rect.x, rect.y));
     }
 
     private static function extrudeTexture(atlas: BitmapData, rect: Rectangle):void {

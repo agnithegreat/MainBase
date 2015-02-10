@@ -25,13 +25,14 @@ public class FontBuilder {
 
     public static function buildFontFromTextField(textField: TextField):FontData {
         var format: TextFormat = textField.defaultTextFormat;
+        format.leftMargin = 0;
+        format.rightMargin = 0;
         var fontName: String = format.font;
         var fontSize: Object = format.size;
-        var fontBold: Object = format.bold;
 
 
         var metrics: TextLineMetrics = textField.getLineMetrics(0);
-
+        var baseLine: int = metrics.ascent - metrics.descent;
 
         var text: String = textField.text + " ";
 
@@ -48,22 +49,21 @@ public class FontBuilder {
             tf.antiAliasType = AntiAliasType.ADVANCED;
             tf.defaultTextFormat = format;
             tf.text = charsMap[key];
-
             textureMap[key] = getCharTexture(tf);
         }
 
-        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false);
+        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false);
 
         var xml: XML = <font />;
 
         var info: XML = <info />;
         info.@face = fontName;
         info.@size = fontSize;
-        info.@bold = fontBold;
         xml.appendChild(info);
 
         var common: XML = <common />;
         common.@lineHeight = fontSize;
+//        common.@base = baseLine-20;
         xml.appendChild(common);
 
         var pages: XML = <pages />;
@@ -80,9 +80,9 @@ public class FontBuilder {
             char.@y = rect.y;
             char.@width = rect.width;
             char.@height = rect.height;
-            char.@xoffset = 0;
-            char.@yoffset = 0;
-            char.@xadvance = rect.width;
+            char.@xoffset = -2;
+            char.@yoffset = -9;
+            char.@xadvance = rect.width-4;
             chars.appendChild(char);
         }
         xml.appendChild(chars);
@@ -90,9 +90,9 @@ public class FontBuilder {
         return new FontData(atlas.texture, atlas.map, xml);
     }
 
-    private static function getCharTexture(tf: TextField):BitmapData {
-        var texture: BitmapData = new BitmapData(tf.width, tf.height, true, 0);
-        texture.draw(tf);
+    private static function getCharTexture(char: TextField):BitmapData {
+        var texture:BitmapData = new BitmapData(char.width, char.height, true, 0);
+        texture.draw(char);
         return texture;
     }
 }
