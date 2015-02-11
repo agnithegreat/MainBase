@@ -18,5 +18,11 @@ public class FontData extends AtlasData {
 
         _xml = xml;
     }
+
+    override public function dispose():void {
+        super.dispose();
+
+        _xml = null;
+    }
 }
 }

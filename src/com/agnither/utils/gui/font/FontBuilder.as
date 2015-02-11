@@ -61,6 +61,8 @@ public class FontBuilder {
             textureMap[code] = charTexture;
         }
 
+        texture.dispose();
+
         var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false);
 
         var xml: XML = <font />;

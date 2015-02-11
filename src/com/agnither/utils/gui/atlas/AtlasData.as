@@ -20,5 +20,12 @@ public class AtlasData {
         _texture = texture;
         _map = map;
     }
+
+    public function dispose():void {
+        _texture.dispose();
+        _texture = null;
+
+        _map = null;
+    }
 }
 }
