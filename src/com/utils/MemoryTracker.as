@@ -16,7 +16,8 @@ public class MemoryTracker {
     }
 
     public static function logTracking():void {
-        trace("Start logging");
+        var log: String = "";
+        log += "Start logging\n";
 
         var dict: Object = {};
         var key: String;
@@ -29,19 +30,23 @@ public class MemoryTracker {
         }
 
         for (key in dict) {
-            trace("- " + key + ": " + dict[key]);
+            log += "- " + key + ": " + dict[key] + "\n";
         }
 
-        trace("Stop logging");
+        log += "Stop logging\n";
 
-        var memory: uint = System.totalMemory / 1024;
-        trace("Memory used: " + memory + " Kb");
+        var memory: uint = System.totalMemory;
+        var memoryMb: String = (memory / 1024 / 1024).toFixed(1);
+        var memoryLine: String = "Memory used: [mb] Mb\n";
+        log += memoryLine.replace("[mb]", memoryMb);
+
         if (lastMemory) {
-            trace("Memory delta: " + (memory - lastMemory) + " Kb");
+            var memoryDeltaLine: String = "Memory delta: [kb] Kb\n";
+            log += memoryDeltaLine.replace("[kb]", (memory - lastMemory) / 1024);
         }
         lastMemory = memory;
 
-        trace();
+        trace(log);
     }
 }
 }
