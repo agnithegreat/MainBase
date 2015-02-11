@@ -35,9 +35,9 @@ public class MemoryTracker {
         trace("Stop logging");
 
         var memory: uint = System.totalMemory / 1024;
-        trace("Memory used: " + memory + "Kb");
+        trace("Memory used: " + memory + " Kb");
         if (lastMemory) {
-            trace("Memory delta: " + (memory - lastMemory) + "Kb");
+            trace("Memory delta: " + (memory - lastMemory) + " Kb");
         }
         lastMemory = memory;
     }
