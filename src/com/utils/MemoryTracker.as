@@ -29,7 +29,7 @@ public class MemoryTracker {
         }
 
         for (key in dict) {
-            trace(key, dict[key]);
+            trace("- " + key + ": " + dict[key]);
         }
 
         trace("Stop logging");
@@ -40,6 +40,8 @@ public class MemoryTracker {
             trace("Memory delta: " + (memory - lastMemory) + " Kb");
         }
         lastMemory = memory;
+
+        trace();
     }
 }
 }
