@@ -6,12 +6,12 @@ import com.agnither.utils.gui.atlas.AtlasData;
 import com.agnither.utils.gui.atlas.TextureAtlasBuilder;
 
 import flash.display.BitmapData;
-import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.text.engine.ElementFormat;
 import flash.text.engine.FontDescription;
 import flash.text.engine.FontWeight;
+import flash.text.engine.TextBaseline;
 import flash.text.engine.TextBlock;
 import flash.text.engine.TextElement;
 import flash.text.engine.TextLine;
@@ -24,27 +24,31 @@ public class FontBuilder {
         var textElement: TextElement = new TextElement(text, elementFormat);
 
         var textBlock: TextBlock = new TextBlock();
+        textBlock.baselineZero = TextBaseline.ASCENT;
         textBlock.content = textElement;
 
         var textLine: TextLine = textBlock.createTextLine();
-        var baseline: Number = textLine.ascent;
+
+        textBlock.releaseLines(textBlock.firstLine, textBlock.lastLine);
+        textBlock.releaseLineCreationData();
+        textBlock.content = null;
 
         var texture: BitmapData = new BitmapData(Math.ceil(textLine.width), Math.ceil(textLine.height), true, 0);
-        texture.draw(textLine, new Matrix(1, 0, 0, 1, 0, Math.ceil(baseline)));
+        texture.draw(textLine);
 
         var charsMap: Object = {};
         var textureMap: Object = {};
         var lastX: Number = 0;
+        var point: Point = new Point();
         for (var i:int = 0; i < textLine.atomCount; i++) {
             var code: int = text.charCodeAt(i);
             var charBounds: Rectangle = textLine.getAtomBounds(i);
-            charBounds.y = 0;
 
             var charTexture: BitmapData = new BitmapData(Math.ceil(charBounds.width), Math.ceil(charBounds.height), true, 0);
-            charTexture.copyPixels(texture, charBounds, new Point());
+            charTexture.copyPixels(texture, charBounds, point);
 
             charBounds.x -= lastX;
-            charBounds.y = textLine.descent * 0.6;
+            charBounds.y = textLine.descent * 0.1;
             lastX += charBounds.width;
 
             charBounds.x = Math.round(charBounds.x);
@@ -68,7 +72,6 @@ public class FontBuilder {
 
         var common: XML = <common />;
         common.@lineHeight = size;
-//        common.@base = baseline;
         xml.appendChild(common);
 
         var pages: XML = <pages />;
