@@ -17,6 +17,8 @@ import flash.text.TextField;
 public class GUIFactory {
 
     public static function createView(parent: AbstractComponent, inView: DisplayObjectContainer):AbstractComponent {
+        // TODO: better memory management
+
         var child: DisplayObject;
         var newChild: AbstractComponent;
         for (var i:int = 0; i < inView.numChildren; i++) {
