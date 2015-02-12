@@ -8,13 +8,23 @@ public class Label extends AbstractComponent {
 
     private var _label: TextField;
 
-    public function Label(width:int,height:int,text:String,fontName:String = "Verdana",fontSize:Number = 12,color:uint = 0,bold:Boolean = false) {
+    public function set text(value: String):void {
+        _label.text = value;
+    }
+
+    public function get text():String {
+        return _label.text;
+    }
+
+    public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false) {
         _label = new TextField(width, height, text, fontName, fontSize, color, bold);
+        _label.batchable = true;
         addChild(_label);
     }
 
     override public function destroy():void {
-        removeChild(_label, true);
+        _label.removeChildren(0, -1, true);
+        _label.removeFromParent(true);
         _label = null;
 
         super.destroy();
