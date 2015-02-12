@@ -4,7 +4,6 @@
 package com.agnither.utils.gui.components {
 import com.agnither.utils.gui.GUIFactory;
 
-import flash.display.DisplayObjectContainer;
 import flash.utils.Dictionary;
 
 import starling.display.DisplayObject;
@@ -13,10 +12,12 @@ import starling.events.Event;
 
 public class AbstractComponent extends Sprite {
 
-    protected var _links: Dictionary;
+    private static const RESOURCES: Dictionary = new Dictionary(true);
+
+    protected var _links: Object;
 
     public function AbstractComponent() {
-        _links = new Dictionary();
+        _links = {};
 
         addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
     }
@@ -31,8 +32,11 @@ public class AbstractComponent extends Sprite {
         initialize();
     }
 
-    public function createFromFlash(child: DisplayObjectContainer):void {
-        GUIFactory.createView(this, child);
+    public function createFromFlash(ResourceClass: Class):void {
+        if (!RESOURCES[ResourceClass]) {
+            RESOURCES[ResourceClass] = new ResourceClass();
+        }
+        GUIFactory.createView(this, RESOURCES[ResourceClass]);
     }
 
     override public function addChild(child: DisplayObject):DisplayObject {
@@ -55,6 +59,7 @@ public class AbstractComponent extends Sprite {
                 _links[key].destroy();
             }
             removeChild(_links[key], true);
+            delete _links[key];
         }
         _links = null;
     }
