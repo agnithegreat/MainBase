@@ -23,6 +23,7 @@ public class Label extends AbstractComponent {
     }
 
     override public function destroy():void {
+        _label.removeChildren(0, -1, true);
         _label.removeFromParent(true);
         _label = null;
 
