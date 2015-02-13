@@ -46,16 +46,19 @@ public class TextureAtlasBuilder {
             }
         }
 
+        textureRect = null;
+        placeRect = null;
+
         return new AtlasData(atlas, rectMap);
     }
 
     private static function drawBorder(atlas: BitmapData, rect: Rectangle, thickness: int = 1):void {
         var border: Shape = new Shape();
         border.graphics.beginFill(0xFF0000);
-        border.graphics.drawRect(0,0,rect.width, rect.height);
-        border.graphics.drawRect(thickness,thickness,rect.width-2*thickness, rect.height-2*thickness);
+        border.graphics.drawRect(0, 0, rect.width, rect.height);
+        border.graphics.drawRect(thickness, thickness, rect.width-2*thickness, rect.height-2*thickness);
 
-        atlas.draw(border, getTemporaryMatrix(rect.x, rect.y));
+        atlas.draw(border, new Matrix(1, 0, 0, 1, rect.x, rect.y));
 
         border.graphics.clear();
     }
@@ -96,15 +99,6 @@ public class TextureAtlasBuilder {
         temporaryPoint.x = x;
         temporaryPoint.y = y;
         return temporaryPoint;
-    }
-
-    private static var temporaryMatrix: Matrix;
-    private static function getTemporaryMatrix(dx: int, dy: int):Matrix {
-        if (!temporaryMatrix) {
-            temporaryMatrix = new Matrix();
-        }
-        temporaryMatrix.translate(dx, dy);
-        return temporaryMatrix;
     }
 
     public static function getTextureXml(atlas: AtlasData, path: String = null):XML {
