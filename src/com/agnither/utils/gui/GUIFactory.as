@@ -2,11 +2,11 @@
  * Created by kirillvirich on 29.01.15.
  */
 package com.agnither.utils.gui {
-import com.agnither.game2048.storage.Resources;
 import com.agnither.utils.gui.components.AbstractComponent;
 import com.agnither.utils.gui.components.Button;
 import com.agnither.utils.gui.components.Label;
 import com.agnither.utils.gui.components.Picture;
+import com.agnither.utils.gui.components.Scale9Picture;
 
 import flash.display.Bitmap;
 import flash.display.DisplayObject;
@@ -16,16 +16,16 @@ import flash.text.TextField;
 
 public class GUIFactory {
 
-    public static function createView(parent: AbstractComponent, inView: DisplayObjectContainer):AbstractComponent {
+    public static function createView(parent: AbstractComponent, inView: DisplayObjectContainer, atlas: String = null):AbstractComponent {
         var child: DisplayObject;
         var newChild: AbstractComponent;
         for (var i:int = 0; i < inView.numChildren; i++) {
             child = inView.getChildAt(i);
 
             if (child is Shape) {
-                newChild = new Picture(Resources.getTexture(parent.name));
+                newChild = parent.scale9Grid ? new Scale9Picture(Resources.getTexture(parent.name, atlas), parent.scale9Grid) : new Picture(Resources.getTexture(parent.name, atlas));
             } else if (child is Bitmap) {
-                newChild = new Picture(Resources.getTexture(parent.name));
+                newChild = new Picture(Resources.getTexture(parent.name, atlas));
             } else if (child is TextField) {
                 newChild = new Label(child.width, child.height, "", child.name);
             } else if (child is DisplayObjectContainer) {
@@ -34,13 +34,18 @@ public class GUIFactory {
                 } else {
                     newChild = new AbstractComponent();
                 }
+                newChild.scale9Grid = child.scale9Grid;
                 newChild.name = child.name;
-                createView(newChild, child as DisplayObjectContainer);
+                createView(newChild, child as DisplayObjectContainer, atlas);
             }
 
             if (newChild) {
                 newChild.name = child.name;
-                newChild.transformationMatrix = child.transform.matrix;
+                if (newChild.scale9Grid) {
+                    newChild.transformChildren(child.transform.matrix);
+                } else {
+                    newChild.transformationMatrix = child.transform.matrix;
+                }
                 parent.addChild(newChild);
             }
 

@@ -7,7 +7,7 @@ import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 
-public class Button extends AbstractComponent {
+public dynamic class Button extends AbstractComponent {
 
     public function Button() {
         super();
