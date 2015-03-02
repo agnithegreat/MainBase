@@ -15,7 +15,10 @@ public class AbstractComponent extends Sprite {
 
     private static const RESOURCES: Dictionary = new Dictionary(true);
 
-    private var _children: Dictionary;
+    protected var _children: Dictionary;
+    public function getChild(name: String):AbstractComponent {
+        return _children ? _children[name] : null;
+    }
 
     private var _baseWidth: int;
     private var _baseHeight: int;
