@@ -8,6 +8,20 @@ public class Label extends AbstractComponent {
 
     private var _label: TextField;
 
+    override public function set width(value: Number):void {
+        _label.width = value;
+    }
+    override public function get width():Number {
+        return _label.width;
+    }
+
+    override public function set height(value: Number):void {
+        _label.height = value;
+    }
+    override public function get height():Number {
+        return _label.height;
+    }
+
     public function set text(value: String):void {
         _label.text = value;
     }
