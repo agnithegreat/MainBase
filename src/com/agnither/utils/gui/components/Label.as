@@ -22,12 +22,12 @@ public class Label extends AbstractComponent {
         addChild(_label);
     }
 
-    override public function destroy():void {
+    override public function dispose():void {
         _label.removeChildren(0, -1, true);
         _label.removeFromParent(true);
         _label = null;
 
-        super.destroy();
+        super.dispose();
     }
 }
 }

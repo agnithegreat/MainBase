@@ -23,26 +23,30 @@ public class GUIFactory {
             child = inView.getChildAt(i);
 
             if (child is Shape) {
-                newChild = parent.scale9Grid ? new Scale9Picture(Resources.getTexture(parent.name, atlas), parent.scale9Grid) : new Picture(Resources.getTexture(parent.name, atlas));
+                newChild = new Picture(Resources.getTexture(parent.name, atlas));
             } else if (child is Bitmap) {
                 newChild = new Picture(Resources.getTexture(parent.name, atlas));
             } else if (child is TextField) {
                 newChild = new Label(child.width, child.height, "", child.name);
             } else if (child is DisplayObjectContainer) {
-                if (child.name.search("btn_") == 0) {
+                if (child.scale9Grid) {
+                    newChild = new Scale9Picture(Resources.getTexture(child.name, atlas), child.scale9Grid);
+                } else if (child.name.search("btn_") == 0) {
                     newChild = new Button();
                 } else {
                     newChild = new AbstractComponent();
                 }
-                newChild.scale9Grid = child.scale9Grid;
                 newChild.name = child.name;
-                createView(newChild, child as DisplayObjectContainer, atlas);
+
+                if (!child.scale9Grid) {
+                    createView(newChild, child as DisplayObjectContainer, atlas);
+                }
             }
 
             if (newChild) {
                 newChild.name = child.name;
-                if (newChild.scale9Grid) {
-                    newChild.transformChildren(child.transform.matrix);
+                if (child.scale9Grid) {
+                    newChild.transformFromMatrix(child.transform.matrix);
                 } else {
                     newChild.transformationMatrix = child.transform.matrix;
                 }

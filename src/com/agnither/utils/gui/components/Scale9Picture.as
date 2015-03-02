@@ -31,11 +31,11 @@ public class Scale9Picture extends AbstractComponent {
         addChild(_image);
     }
 
-    override public function destroy():void {
+    override public function dispose():void {
         removeChild(_image, true);
         _image = null;
 
-        super.destroy();
+        super.dispose();
     }
 }
 }

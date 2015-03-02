@@ -29,5 +29,11 @@ public dynamic class Button extends AbstractComponent {
             }
         }
     }
+
+    override public function dispose():void {
+        removeEventListener(TouchEvent.TOUCH, handleTouch);
+
+        super.dispose();
+    }
 }
 }

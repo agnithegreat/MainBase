@@ -5,8 +5,6 @@ package com.agnither.utils.gui.components {
 import com.agnither.utils.gui.GUIFactory;
 
 import flash.geom.Matrix;
-
-import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
 import starling.display.DisplayObject;
@@ -17,7 +15,8 @@ public dynamic class AbstractComponent extends Sprite {
 
     private static const RESOURCES: Dictionary = new Dictionary(true);
 
-    public var scale9Grid: Rectangle;
+    private var _baseWidth: int;
+    private var _baseHeight: int;
 
     public function AbstractComponent() {
         addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
@@ -54,26 +53,31 @@ public dynamic class AbstractComponent extends Sprite {
         return super.removeChild(child, dispose);
     }
 
-    public function transformChildren(matrix: Matrix):void {
-        for (var i:int = 0; i < numChildren; i++) {
-            var child: DisplayObject = getChildAt(i);
-            child.x = matrix.tx;
-            child.y = matrix.ty;
-            child.width = child.width * matrix.a;
-            child.height = child.height * matrix.d;
+    public function transformFromMatrix(matrix: Matrix):void {
+        if (!_baseWidth) {
+            _baseWidth = width;
+        }
+        if (!_baseHeight) {
+            _baseHeight = height;
+        }
+
+        x = matrix.tx;
+        y = matrix.ty;
+        width = _baseWidth * matrix.a;
+        height = _baseHeight * matrix.d;
+    }
+
+    override public function dispose():void {
+        for (var key:String in this) {
+            if (this[key] is AbstractComponent) {
+                (this[key] as AbstractComponent).destroy();
+            }
+            delete this[key];
+            this[key] = null;
         }
     }
 
     public function destroy():void {
-        for (var key:String in this) {
-            if (this[key] is AbstractComponent) {
-                this[key].destroy();
-            }
-            removeChild(this[key], true);
-            delete this[key];
-            this[key] = null;
-        }
-
         removeFromParent(true);
     }
 }
