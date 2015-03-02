@@ -11,14 +11,18 @@ import starling.display.DisplayObject;
 import starling.display.Sprite;
 import starling.events.Event;
 
-public dynamic class AbstractComponent extends Sprite {
+public class AbstractComponent extends Sprite {
 
     private static const RESOURCES: Dictionary = new Dictionary(true);
+
+    private var _children: Dictionary;
 
     private var _baseWidth: int;
     private var _baseHeight: int;
 
     public function AbstractComponent() {
+        _children = new Dictionary(true);
+
         addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
     }
 
@@ -41,14 +45,14 @@ public dynamic class AbstractComponent extends Sprite {
 
     override public function addChild(child: DisplayObject):DisplayObject {
         if (child && child.name) {
-            this[child.name] = child;
+            _children[child.name] = child;
         }
         return super.addChild(child);
     }
 
     override public function removeChild(child: DisplayObject, dispose: Boolean = false):DisplayObject {
         if (child && child.name) {
-            delete this[child.name];
+            delete _children[child.name];
         }
         return super.removeChild(child, dispose);
     }
@@ -69,12 +73,15 @@ public dynamic class AbstractComponent extends Sprite {
 
     override public function dispose():void {
         for (var key:String in this) {
-            if (this[key] is AbstractComponent) {
-                (this[key] as AbstractComponent).destroy();
+            if (_children[key] is AbstractComponent) {
+                (_children[key] as AbstractComponent).destroy();
             }
-            delete this[key];
-            this[key] = null;
+            _children[key] = null;
+            delete _children[key];
         }
+        _children = null;
+
+        super.dispose();
     }
 
     public function destroy():void {
