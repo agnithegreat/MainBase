@@ -9,6 +9,10 @@ import starling.events.TouchPhase;
 
 public class Button extends AbstractComponent {
 
+    public function get label():Label {
+        return getChild("label") as Label;
+    }
+
     public function Button() {
         super();
     }

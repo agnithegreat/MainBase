@@ -15,6 +15,10 @@ public class AbstractComponent extends Sprite {
 
     private static const RESOURCES: Dictionary = new Dictionary(true);
 
+    protected function getManifest():Dictionary {
+        return null;
+    }
+
     protected var _children: Dictionary;
 
     public function getChild(path: String):AbstractComponent {
@@ -53,7 +57,7 @@ public class AbstractComponent extends Sprite {
         if (!RESOURCES[ResourceClass]) {
             RESOURCES[ResourceClass] = new ResourceClass();
         }
-        GUIFactory.createView(this, RESOURCES[ResourceClass], atlas);
+        GUIFactory.createView(this, RESOURCES[ResourceClass], atlas, getManifest());
     }
 
     override public function addChild(child: DisplayObject):DisplayObject {

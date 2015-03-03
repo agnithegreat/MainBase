@@ -13,22 +13,28 @@ import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Shape;
 import flash.text.TextField;
+import flash.utils.Dictionary;
+import flash.utils.getDefinitionByName;
 import flash.utils.getQualifiedClassName;
 
 public class GUIFactory {
 
-    public static function createView(parent: AbstractComponent, inView: DisplayObjectContainer, atlas: String = null):void {
+    public static function createView(parent: AbstractComponent, inView: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):void {
         for (var i:int = 0; i < inView.numChildren; i++) {
             var child: DisplayObject = inView.getChildAt(i);
-            var newChild: AbstractComponent = getChild(child, inView, atlas);
+            var newChild: AbstractComponent = getChild(child, inView, atlas, manifest);
             parent.addChild(newChild);
         }
     }
 
-    private static function getChild(view: DisplayObject, parent: DisplayObjectContainer, atlas: String = null):AbstractComponent {
+    private static function getChild(view: DisplayObject, parent: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):AbstractComponent {
         var newChild: AbstractComponent;
 
-        if (parent.scale9Grid) {
+        var ViewClass: Class = getDefinitionByName(getQualifiedClassName(view)) as Class;
+        if (manifest && manifest[ViewClass]) {
+            var ComponentClass: Class = manifest[ViewClass];
+            newChild = new ComponentClass();
+        } else if (parent.scale9Grid) {
             newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), parent.scale9Grid);
         } else if (view is Shape) {
             newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas));
