@@ -37,19 +37,19 @@ public class Atlas {
 
     }
 
-    public function addGraphics(name: String, graphics: DisplayObject):void {
+    public function addGraphics(className: String, graphics: DisplayObject):void {
         var bd: BitmapData = new BitmapData(graphics.width, graphics.height, true, 0);
         bd.draw(graphics);
 
-        addBitmapData(name, bd);
+        addBitmapData(className, bd);
     }
 
-    public function addBitmapData(name: String, bitmapData: BitmapData):void {
-        _textures[name] = bitmapData;
+    public function addBitmapData(className: String, bitmapData: BitmapData):void {
+        _textures[className] = bitmapData;
     }
 
-    public function addFont(name: String, chars: String, font: String, size: int, color: uint, bold: Boolean):void {
-        _fontsParams[name] = [chars, font, size, color, bold];
+    public function addFont(className: String, chars: String, font: String, size: int, color: uint, bold: Boolean):void {
+        _fontsParams[className] = [chars, font, size, color, bold];
     }
 
     public function build():void {

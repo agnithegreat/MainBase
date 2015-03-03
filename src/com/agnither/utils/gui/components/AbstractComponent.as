@@ -16,8 +16,18 @@ public class AbstractComponent extends Sprite {
     private static const RESOURCES: Dictionary = new Dictionary(true);
 
     protected var _children: Dictionary;
-    public function getChild(name: String):AbstractComponent {
-        return _children ? _children[name] : null;
+
+    public function getChild(path: String):AbstractComponent {
+        if (path.length == 0) {
+            return this;
+        }
+
+        var nodes: Array = path.split(".");
+        var node: String = nodes.shift();
+        if (_children.hasOwnProperty(node)) {
+            return (_children[node] as AbstractComponent).getChild(nodes.join("."));
+        }
+        return null;
     }
 
     private var _baseWidth: int;
@@ -58,20 +68,6 @@ public class AbstractComponent extends Sprite {
             delete _children[child.name];
         }
         return super.removeChild(child, dispose);
-    }
-
-    public function transformFromMatrix(matrix: Matrix):void {
-        if (!_baseWidth) {
-            _baseWidth = width;
-        }
-        if (!_baseHeight) {
-            _baseHeight = height;
-        }
-
-        x = matrix.tx;
-        y = matrix.ty;
-        width = _baseWidth * matrix.a;
-        height = _baseHeight * matrix.d;
     }
 
     override public function dispose():void {

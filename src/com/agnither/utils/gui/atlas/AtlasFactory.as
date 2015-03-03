@@ -10,8 +10,8 @@ import flash.display.DisplayObjectContainer;
 import flash.display.Shape;
 import flash.text.TextField;
 import flash.text.TextFormat;
-
 import flash.utils.Dictionary;
+import flash.utils.getQualifiedClassName;
 
 public class AtlasFactory {
 
@@ -31,21 +31,23 @@ public class AtlasFactory {
         child.scaleX = 1;
         child.scaleY = 1;
 
+        var className: String = parent ? getQualifiedClassName(parent) : "";
+
         if (child is DisplayObjectContainer) {
             parent = child as DisplayObjectContainer;
             for (var i:int = 0; i < parent.numChildren; i++) {
                 checkChild(parent.getChildAt(i), parent, atlas);
             }
         } else if (child is Shape) {
-            atlas.addGraphics(parent.name, child);
+            atlas.addGraphics(className, child);
         } else if (child is Bitmap) {
             var bitmap: Bitmap = child as Bitmap;
-            atlas.addBitmapData(parent.name, bitmap.bitmapData);
+            atlas.addBitmapData(className, bitmap.bitmapData);
             bitmap = null;
         } else if (child is TextField) {
             var textfield: TextField = child as TextField;
             var format: TextFormat = textfield.defaultTextFormat;
-            atlas.addFont(child.name, CharsetUtil.getChars(textfield.text), format.font, int(format.size), uint(format.color), format.bold);
+            atlas.addFont(className, CharsetUtil.getChars(textfield.text), format.font, int(format.size), uint(format.color), format.bold);
             format = null;
             textfield = null;
         }
