@@ -9,6 +9,10 @@ public class Picture extends AbstractComponent {
 
     private var _image: Image;
 
+    public function set color(value: uint):void {
+        _image.color = value;
+    }
+
     public function Picture(texture: Texture) {
         _image = new Image(texture);
         addChild(_image);

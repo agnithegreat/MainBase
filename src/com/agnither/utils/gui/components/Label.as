@@ -25,9 +25,12 @@ public class Label extends AbstractComponent {
     public function set text(value: String):void {
         _label.text = value;
     }
-
     public function get text():String {
         return _label.text;
+    }
+
+    public function set color(value: uint):void {
+        _label.color = value;
     }
 
     public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false) {
