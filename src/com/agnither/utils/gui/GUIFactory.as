@@ -12,6 +12,8 @@ import flash.display.Bitmap;
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Shape;
+import flash.geom.Point;
+import flash.geom.Rectangle;
 import flash.text.TextField;
 import flash.utils.Dictionary;
 import flash.utils.getDefinitionByName;
@@ -30,16 +32,18 @@ public class GUIFactory {
     private static function getChild(view: DisplayObject, parent: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):AbstractComponent {
         var newChild: AbstractComponent;
 
+        var pivotRect: Rectangle = view.getBounds(view);
+
         var ViewClass: Class = getDefinitionByName(getQualifiedClassName(view)) as Class;
         if (manifest && manifest[ViewClass]) {
             var ComponentClass: Class = manifest[ViewClass];
             newChild = new ComponentClass();
         } else if (parent.scale9Grid) {
-            newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), parent.scale9Grid);
+            newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), parent.scale9Grid, new Point(-pivotRect.x, -pivotRect.y));
         } else if (view is Shape) {
-            newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas));
+            newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), new Point(-pivotRect.x, -pivotRect.y));
         } else if (view is Bitmap) {
-            newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas));
+            newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), new Point(-pivotRect.x, -pivotRect.y));
         } else if (view is TextField) {
             newChild = new Label(view.width, view.height, "", getQualifiedClassName(parent));
         } else if (view is DisplayObjectContainer) {
@@ -63,6 +67,8 @@ public class GUIFactory {
                 child = null;
             }
         }
+
+
         newChild.transformationMatrix = view.transform.matrix;
         newChild.name = view.name;
         return newChild;

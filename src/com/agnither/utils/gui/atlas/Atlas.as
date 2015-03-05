@@ -7,6 +7,8 @@ import com.agnither.utils.gui.font.FontData;
 
 import flash.display.BitmapData;
 import flash.display.DisplayObject;
+import flash.geom.Matrix;
+import flash.geom.Rectangle;
 
 import starling.text.BitmapFont;
 import starling.text.TextField;
@@ -38,8 +40,9 @@ public class Atlas {
     }
 
     public function addGraphics(className: String, graphics: DisplayObject):void {
+        var rect: Rectangle = graphics.getBounds(graphics);
         var bd: BitmapData = new BitmapData(graphics.width, graphics.height, true, 0);
-        bd.draw(graphics);
+        bd.draw(graphics, new Matrix(1,0,0,1,-rect.x,-rect.y));
 
         addBitmapData(className, bd);
     }

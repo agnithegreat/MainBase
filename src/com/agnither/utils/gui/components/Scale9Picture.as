@@ -2,6 +2,7 @@
  * Created by kirillvirich on 30.01.15.
  */
 package com.agnither.utils.gui.components {
+import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import starling.extensions.Scale9Image;
@@ -25,10 +26,15 @@ public class Scale9Picture extends AbstractComponent {
         return _image.height;
     }
 
-    public function Scale9Picture(texture: Texture, rect: Rectangle) {
+    public function Scale9Picture(texture: Texture, rect: Rectangle, pivot: Point = null) {
         _image = new Scale9Image(texture, rect);
         _image.scaleIfSmaller = false;
         addChild(_image);
+
+        if (pivot) {
+            _image.pivotX = pivot.x;
+            _image.pivotY = pivot.y;
+        }
     }
 
     override public function dispose():void {
