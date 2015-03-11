@@ -28,7 +28,6 @@ public class Scale9Picture extends AbstractComponent {
 
     public function Scale9Picture(texture: Texture, rect: Rectangle, pivot: Point = null) {
         _image = new Scale9Image(texture, rect);
-        _image.scaleIfSmaller = false;
         addChild(_image);
 
         if (pivot) {
