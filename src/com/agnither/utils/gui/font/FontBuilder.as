@@ -56,8 +56,7 @@ public class FontBuilder {
             charBounds.width = Math.floor(charBounds.width);
             charBounds.height = Math.floor(charBounds.height);
 
-            var charData: CharData = new CharData(charTexture, charBounds);
-            charsMap[code] = charData;
+            charsMap[code] = new CharData(charTexture, charBounds);
             textureMap[code] = charTexture;
         }
 
@@ -83,7 +82,7 @@ public class FontBuilder {
 
         var chars: XML = <chars />;
         for (code in charsMap) {
-            charData = charsMap[code];
+            var charData: CharData = charsMap[code];
             var rect: Rectangle = atlas.map[code];
 
             var char: XML = <char />;

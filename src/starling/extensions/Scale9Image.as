@@ -162,7 +162,7 @@ public class Scale9Image extends Sprite {
             _cr.x = rx;
             _br.x = rx;
 
-            var cw:Number = rx - _grid.x
+            var cw:Number = rx - _grid.x;
             _tc.width = cw;
             _cc.width = cw;
             _bc.width = cw;

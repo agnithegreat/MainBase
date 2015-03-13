@@ -115,7 +115,7 @@
 				}
 				else
 				{
-					//not fit, don't place it, merge blank area to others toghther
+					//not fit, don't place it, merge blank area to others together
 					if(areaID == 0)
 					{
 						areaNext = remainAreaList[areaID + 1];

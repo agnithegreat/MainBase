@@ -4,7 +4,6 @@
 package com.agnither.utils.gui.components {
 import com.agnither.utils.gui.GUIFactory;
 
-import flash.geom.Matrix;
 import flash.utils.Dictionary;
 
 import starling.display.DisplayObject;
@@ -33,9 +32,6 @@ public class AbstractComponent extends Sprite {
         }
         return null;
     }
-
-    private var _baseWidth: int;
-    private var _baseHeight: int;
 
     public function AbstractComponent() {
         _children = new Dictionary(true);
