@@ -147,11 +147,6 @@ public class Scale9Image extends Sprite {
         var width:Number = x / scaleX;
         var height:Number = y / scaleY;
 
-        trace("------------------------------------------");
-        trace(_tW, _tH, _width, _height, scaleX, scaleY);
-        trace(_grid);
-        trace(_width < _tW - _grid.width);
-
         if (width < _tW - _grid.width) {
             _tc.visible = false;
             _bc.visible = false;
@@ -177,7 +172,6 @@ public class Scale9Image extends Sprite {
                 lw = _grid.x * pct;
                 _tl.width = lw;
                 _cl.width = lw;
-                trace("CL WID 2", lw);
                 _bl.width = lw;
 
                 rw = (_tW - _grid.x - _grid.width) * pct;
@@ -198,7 +192,6 @@ public class Scale9Image extends Sprite {
             lw = _grid.x;
             _tl.width = lw;
             _cl.width = lw;
-            trace("CL WID 3", lw);
             _bl.width = lw;
 
             rw = (_tW - _grid.x - _grid.width);

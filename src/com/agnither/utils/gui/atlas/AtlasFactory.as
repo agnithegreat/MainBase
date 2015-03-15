@@ -47,7 +47,8 @@ public class AtlasFactory {
         } else if (child is TextField) {
             var textfield: TextField = child as TextField;
             var format: TextFormat = textfield.defaultTextFormat;
-            atlas.addFont(className, CharsetUtil.getChars(textfield.text), format.font, int(format.size), uint(format.color), format.bold);
+            atlas.addFont(format.font+format.size, CharsetUtil.getChars(textfield.text), format.font, int(format.size), uint(format.color), format.bold);
+//            atlas.addFont(className, CharsetUtil.getChars(textfield.text), format.font, int(format.size), uint(format.color), format.bold);
             format = null;
             textfield = null;
         }

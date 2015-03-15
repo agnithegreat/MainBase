@@ -45,7 +45,9 @@ public class GUIFactory {
         } else if (view is Bitmap) {
             newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), new Point(-pivotRect.x, -pivotRect.y));
         } else if (view is TextField) {
-            newChild = new Label(view.width, view.height, "", getQualifiedClassName(parent));
+            var tf : TextField = view as TextField;
+            newChild = new Label(view.width, view.height, "", tf.defaultTextFormat.font+tf.defaultTextFormat.size);
+//            newChild = new Label(view.width, view.height, "", getQualifiedClassName(parent));
         } else if (view is DisplayObjectContainer) {
             if (view.name.search("btn_") == 0) {
                 newChild = new Button();
