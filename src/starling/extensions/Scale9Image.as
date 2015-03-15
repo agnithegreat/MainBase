@@ -1,4 +1,5 @@
 package starling.extensions {
+import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
 import starling.display.Image;
@@ -25,6 +26,9 @@ public class Scale9Image extends Sprite {
     private var _width:Number;
 
     private var _scaleIfSmaller:Boolean = true;
+    private var _items : Array;
+    private var _textureName : String;
+    private var _texture : Texture;
 
     public function get scaleIfSmaller():Boolean {
         return _scaleIfSmaller;
@@ -59,8 +63,9 @@ public class Scale9Image extends Sprite {
     }
 
     public function Scale9Image(texture:Texture, centerRect:Rectangle) {
-        _tW = texture.width;
-        _tH = texture.height;
+        _texture = texture;
+        _tW = texture.nativeWidth;
+        _tH = texture.nativeHeight;
         _grid = centerRect;
 
         _width = _tW;
@@ -70,22 +75,28 @@ public class Scale9Image extends Sprite {
 
         _tc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, 0, _grid.width, _grid.y)));
 
-        _tr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, 0, texture.width - (_grid.x + _grid.width), _grid.y)));
+        _tr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, 0, texture.nativeWidth - (_grid.x + _grid.width), _grid.y)));
 
         _cl = new Image(Texture.fromTexture(texture, new Rectangle(0, _grid.y, _grid.x, _grid.height)));
 
         _cc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, _grid.y, _grid.width, _grid.height)));
 
-        _cr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y, texture.width - (_grid.x + _grid.width), _grid.height)));
+        _cr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y, texture.nativeWidth - (_grid.x + _grid.width), _grid.height)));
 
-        _bl = new Image(Texture.fromTexture(texture, new Rectangle(0, _grid.y + _grid.height, _grid.x, texture.height - (_grid.y + _grid.height))));
+        _bl = new Image(Texture.fromTexture(texture, new Rectangle(0, _grid.y + _grid.height, _grid.x, texture.nativeHeight - (_grid.y + _grid.height))));
 
-        _bc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, _grid.y + _grid.height, _grid.width, texture.height - (_grid.y + _grid.height))));
+        _bc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, _grid.y + _grid.height, _grid.width, texture.nativeHeight - (_grid.y + _grid.height))));
 
-        _br = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y + _grid.height, texture.width - (_grid.x + _grid.width), texture.height - (_grid.y + _grid.height))));
+        _br = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y + _grid.height, texture.nativeWidth - (_grid.x + _grid.width), texture.nativeHeight - (_grid.y + _grid.height))));
 
-        _tc.x = _cc.x = _bc.x = _grid.x;
-        _cl.y = _cc.y = _cr.y = _grid.y;
+//        _tc.x = _cc.x = _bc.x = _grid.x;
+//        _cl.y = _cc.y = _cr.y = _grid.y;
+
+        _items = [
+            [_tl, _cl, _bl],
+            [_tc, _cc, _bc],
+            [_tr, _cr, _br]
+        ];
 
         addChild(_tl);
         addChild(_tc);
@@ -102,9 +113,44 @@ public class Scale9Image extends Sprite {
         apply9Scale(_tW, _tH);
     }
 
+    private function apply9Scale2(x:Number, y:Number):void {
+
+        var cols : Array = [0, _grid.left, _grid.right, _tW];
+        var rows : Array = [0, _grid.top, _grid.bottom, _tH];
+
+        var dCols : Array = [0, _grid.left, x - (_tW - _grid.right), x];
+        var dRows : Array = [0, _grid.top, y - (_tH - _grid.bottom), y];
+
+        var origin : Rectangle;
+        var draw : Rectangle;
+
+        for (var cx : int = 0; cx < 3; cx++) {
+            for (var cy : int = 0; cy < 3; cy++) {
+
+                origin = new Rectangle(cols[cx], rows[cy], cols[cx + 1] - cols[cx], rows[cy + 1] - rows[cy]);
+                draw = new Rectangle(dCols[cx], dRows[cy], dCols[cx + 1] - dCols[cx], dRows[cy + 1] - dRows[cy]);
+
+                var img : Image = _items[cx][cy];
+                img.x = draw.x;
+                img.y = draw.y;
+                img.scaleX = draw.width / origin.width;
+                img.scaleY = draw.height / origin.height;
+            }
+        }
+    }
+
     private function apply9Scale(x:Number, y:Number):void {
+
+        apply9Scale2(x,y);
+        return;
+
         var width:Number = x / scaleX;
         var height:Number = y / scaleY;
+
+        trace("------------------------------------------");
+        trace(_tW, _tH, _width, _height, scaleX, scaleY);
+        trace(_grid);
+        trace(_width < _tW - _grid.width);
 
         if (width < _tW - _grid.width) {
             _tc.visible = false;
@@ -115,6 +161,7 @@ public class Scale9Image extends Sprite {
 
                 _tl.width = lw;
                 _cl.width = lw;
+                trace("CL WID 1", lw);
                 _bl.width = lw;
 
                 _tr.x = lw;
@@ -130,6 +177,7 @@ public class Scale9Image extends Sprite {
                 lw = _grid.x * pct;
                 _tl.width = lw;
                 _cl.width = lw;
+                trace("CL WID 2", lw);
                 _bl.width = lw;
 
                 rw = (_tW - _grid.x - _grid.width) * pct;
@@ -150,6 +198,7 @@ public class Scale9Image extends Sprite {
             lw = _grid.x;
             _tl.width = lw;
             _cl.width = lw;
+            trace("CL WID 3", lw);
             _bl.width = lw;
 
             rw = (_tW - _grid.x - _grid.width);
@@ -258,6 +307,16 @@ public class Scale9Image extends Sprite {
         _br = null;
 
         super.dispose();
+    }
+
+    public function get tW() : Number
+    {
+        return _tW;
+    }
+
+    public function get tH() : Number
+    {
+        return _tH;
     }
 }
 }
