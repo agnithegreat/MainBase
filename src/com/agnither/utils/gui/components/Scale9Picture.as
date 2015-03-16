@@ -13,9 +13,7 @@ public class Scale9Picture extends AbstractComponent {
 
     private var _image: Scale9Image;
 
-
-    override public function set transformationMatrix(matrix : Matrix) : void
-    {
+    override public function set transformationMatrix(matrix: Matrix):void {
         x = matrix.tx;
         y = matrix.ty;
         width = _image.tW * matrix.a;
@@ -37,7 +35,6 @@ public class Scale9Picture extends AbstractComponent {
     }
 
     public function Scale9Picture(texture: Texture, rect: Rectangle, pivot: Point = null) {
-
         _image = new Scale9Image(texture, rect);
         addChild(_image);
 
