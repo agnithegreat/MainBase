@@ -1,4 +1,4 @@
-package com.utils {
+package com.agnither.utils {
 import flash.system.System;
 import flash.utils.Dictionary;
 import flash.utils.getQualifiedClassName;

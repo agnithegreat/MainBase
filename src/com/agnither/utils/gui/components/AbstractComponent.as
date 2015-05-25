@@ -5,8 +5,9 @@ package com.agnither.utils.gui.components {
 import com.agnither.utils.gui.GUIFactory;
 
 import flash.utils.Dictionary;
+    import flash.utils.getDefinitionByName;
 
-import starling.display.DisplayObject;
+    import starling.display.DisplayObject;
 import starling.display.Sprite;
 import starling.events.Event;
 
@@ -49,7 +50,8 @@ public class AbstractComponent extends Sprite {
         initialize();
     }
 
-    public function createFromFlash(ResourceClass: Class, atlas: String = null):void {
+    public function createFromFlash(definition: String, atlas: String = null):void {
+        var ResourceClass: Class = getDefinitionByName(definition) as Class;
         if (!RESOURCES[ResourceClass]) {
             RESOURCES[ResourceClass] = new ResourceClass();
         }
