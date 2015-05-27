@@ -4,7 +4,9 @@
 package {
     import com.agnither.utils.Screen;
 
-    import flash.display3D.Context3DRenderMode;
+import flash.display3D.Context3DProfile;
+
+import flash.display3D.Context3DRenderMode;
 import flash.geom.Rectangle;
 import flash.system.Capabilities;
 
@@ -37,7 +39,7 @@ import starling.core.Starling;
 
         Starling.handleLostContext = !ios;
 
-        _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO);
+        _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE_EXTENDED);
         handleResize(null);
 
         _starling.addEventListener(Event.ROOT_CREATED, handleRootCreated);
