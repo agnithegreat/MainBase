@@ -16,19 +16,25 @@ package com.agnither.utils.gui
     {
         private var _assets: AssetManager;
 
-        private var _filename: String;
+        private var _files: Array;
+        private var _converted: int;
 
         public function SWFLoader()
         {
             _assets = new AssetManager();
             _assets.verbose = true;
+
+            _files = [];
         }
 
-        public function load(filename: String):void
+        public function addFile(filename: String):void
         {
-            _filename = filename;
+            _files.push(filename);
+            _assets.enqueue(File.applicationDirectory.resolvePath(filename + ".swf"));
+        }
 
-            _assets.enqueue(File.applicationDirectory.resolvePath(_filename + ".swf"));
+        public function load():void
+        {
             _assets.loadQueue(handleProgress);
         }
 
@@ -36,17 +42,24 @@ package com.agnither.utils.gui
         {
             if (value == 1)
             {
-                var loader: Loader = new Loader();
                 var context: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
                 context.allowCodeImport = true;
-                loader.loadBytes(_assets.getByteArray(_filename), context);
-                loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleSWFConverted);
+                for (var i:int = 0; i < _files.length; i++)
+                {
+                    var loader: Loader = new Loader();
+                    loader.loadBytes(_assets.getByteArray(_files[i]), context);
+                    loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleSWFConverted);
+                }
             }
         }
 
         private function handleSWFConverted(event: Event):void
         {
-            dispatchEvent(event);
+            _converted++;
+            if (_converted >= _files.length)
+            {
+                dispatchEvent(event);
+            }
         }
     }
 }
