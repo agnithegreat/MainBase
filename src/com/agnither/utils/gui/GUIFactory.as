@@ -34,9 +34,9 @@ public class GUIFactory {
 
         var pivotRect: Rectangle = view.getBounds(view);
 
-        var ViewClass: Class = getDefinitionByName(getQualifiedClassName(view)) as Class;
-        if (manifest && manifest[ViewClass]) {
-            var ComponentClass: Class = manifest[ViewClass];
+        var className: String = getQualifiedClassName(view);
+        if (manifest && manifest[className]) {
+            var ComponentClass: Class = manifest[className];
             newChild = new ComponentClass();
         } else if (parent.scale9Grid) {
             newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), parent.scale9Grid, new Point(-pivotRect.x, -pivotRect.y));
