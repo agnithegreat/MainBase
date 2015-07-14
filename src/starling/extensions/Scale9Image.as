@@ -1,5 +1,4 @@
 package starling.extensions {
-import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
 import starling.display.Image;
