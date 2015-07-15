@@ -7,7 +7,8 @@ package
 
     import flash.display3D.Context3DProfile;
     import flash.display3D.Context3DRenderMode;
-    import flash.geom.Rectangle;
+import flash.geom.Rectangle;
+import flash.geom.Rectangle;
     import flash.system.Capabilities;
 
     import starling.core.Starling;
@@ -17,12 +18,17 @@ package
     {
         private var _mainClass: Class;
 
+        protected var _graphicsSize: Rectangle;
+        protected var _fixedProportions: Boolean;
         protected var _mobile: Boolean;
         protected var _starling: Starling;
 
-        public function StarlingMainBase(mainClass: Class, scale:String = null, align:String = null)
+        public function StarlingMainBase(mainClass: Class, graphicsSize: Rectangle = null, fixedProportions: Boolean = false, scale:String = null, align:String = null)
         {
             _mainClass = mainClass;
+
+            _graphicsSize = graphicsSize;
+            _fixedProportions = fixedProportions;
 
             super(scale, align);
         }
@@ -65,10 +71,13 @@ package
 
         private function handleResize(event: Event):void
         {
-            _starling.viewPort = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-            _starling.stage.stageWidth = _starling.viewPort.width;
-            _starling.stage.stageHeight = _starling.viewPort.height;
-
+            if (!_fixedProportions || _graphicsSize == null)
+            {
+                _graphicsSize = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            }
+            _starling.viewPort = _graphicsSize;
+            _starling.stage.stageWidth = _graphicsSize.width;
+            _starling.stage.stageHeight = _graphicsSize.height;
             Screen.viewport.width = _starling.stage.stageWidth;
             Screen.viewport.height = _starling.stage.stageHeight;
         }
