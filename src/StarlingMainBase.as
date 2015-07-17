@@ -71,11 +71,14 @@ import flash.geom.Rectangle;
 
         private function handleResize(event: Event):void
         {
+            var viewport: Rectangle = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            _starling.viewPort = viewport;
+
             if (!_fixedProportions || _graphicsSize == null)
             {
-                _graphicsSize = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+                _graphicsSize = viewport;
             }
-            _starling.viewPort = _graphicsSize;
+
             _starling.stage.stageWidth = _graphicsSize.width;
             _starling.stage.stageHeight = _graphicsSize.height;
             Screen.viewport.width = _starling.stage.stageWidth;
