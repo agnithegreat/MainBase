@@ -49,7 +49,7 @@ import flash.geom.Rectangle;
             Starling.multitouchEnabled = true;
             Starling.handleLostContext = !ios;
 
-            _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE_EXTENDED);
+            _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
             handleResize(null);
 
             _starling.addEventListener(Event.ROOT_CREATED, handleRootCreated);
@@ -72,12 +72,19 @@ import flash.geom.Rectangle;
         private function handleResize(event: Event):void
         {
             var viewport: Rectangle = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-            _starling.viewPort = viewport;
+            var scaleX: Number = viewport.width / _graphicsSize.width;
+            var scaleY: Number = viewport.height / _graphicsSize.height;
+            var minScale: Number = Math.min(scaleX, scaleY);
+            Screen.viewport.width = _fixedProportions ? _graphicsSize.width * minScale : _graphicsSize.width * scaleX;
+            Screen.viewport.height = _fixedProportions ? _graphicsSize.height * minScale : _graphicsSize.height * scaleY;
+            Screen.viewport.x = (viewport.width - Screen.viewport.width)/2;
+            Screen.viewport.y = (viewport.height - Screen.viewport.height)/2;
 
-            if (!_fixedProportions || _graphicsSize == null)
+            if (_graphicsSize == null)
             {
-                _graphicsSize = viewport;
+                _graphicsSize = Screen.viewport;
             }
+            _starling.viewPort = Screen.viewport;
 
             _starling.stage.stageWidth = _graphicsSize.width;
             _starling.stage.stageHeight = _graphicsSize.height;
