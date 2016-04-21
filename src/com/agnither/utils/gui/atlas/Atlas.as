@@ -17,14 +17,31 @@ import starling.textures.TextureAtlas;
 
 public class Atlas {
 
+    public static function fromTextureAtlas(textureAtlas: TextureAtlas, scale: Number = 1):Atlas
+    {
+        var atlas: Atlas = new Atlas(scale);
+        atlas.textureAtlas = textureAtlas;
+        return atlas;
+    }
+
     private var _textures: Object = {};
 
     private var _fontsParams: Object = {};
     private var _fonts: Object = {};
 
     private var _textureAtlas: TextureAtlas;
+    public function set textureAtlas(value: TextureAtlas):void
+    {
+        _textureAtlas = value;
+    }
     public function get created():Boolean {
         return Boolean(_textureAtlas);
+    }
+
+    private var _scale: Number;
+    public function get scale():Number
+    {
+        return _scale;
     }
 
     public function getAtlas():Texture {
@@ -35,45 +52,59 @@ public class Atlas {
         return _textureAtlas ? _textureAtlas.getTexture(name) : null;
     }
 
-    public function Atlas() {
+    public function getTextures(name: String):Vector.<Texture> {
+        return _textureAtlas ? _textureAtlas.getTextures(name) : null;
+    }
 
+    public function Atlas(scale: Number = 1) {
+        _scale = scale;
     }
 
     public function addGraphics(className: String, graphics: DisplayObject):void {
+        graphics.scaleX *= scale;
+        graphics.scaleY *= scale;
+
         var rect: Rectangle = graphics.getBounds(graphics);
         var bd: BitmapData = new BitmapData(graphics.width, graphics.height, true, 0);
-        bd.draw(graphics, new Matrix(1,0,0,1,-rect.x,-rect.y));
+        bd.draw(graphics, new Matrix(scale,0,0,scale,-rect.x*scale,-rect.y*scale));
 
-        addBitmapData(className, bd);
+        addBitmapData(className, bd, true);
+
+        graphics.scaleX /= scale;
+        graphics.scaleY /= scale;
     }
 
-    public function addBitmapData(className: String, bitmapData: BitmapData):void {
-        _textures[className] = bitmapData;
+    public function addBitmapData(className: String, bitmapData: BitmapData, preScaled: Boolean = false):void {
+//        trace(className + " texture added");
+        _textures[className] = preScaled ? bitmapData : scaleBitmapData(bitmapData, scale);
     }
 
-    public function addFont(className: String, chars: String, font: String, size: int, color: uint, bold: Boolean):void {
-        _fontsParams[className] = [chars, font, size, color, bold];
+    public function addFont(className: String, chars: String, font: String, size: int, color: uint, bold: Boolean, advance: int = 1):void {
+        _fontsParams[className] = [chars, font, size * scale, color, bold, advance];
     }
 
-    public function build():void {
-        for (var name: String in _fontsParams) {
-            var font: FontData = FontBuilder.buildFontFromChars.apply(this, _fontsParams[name]);
-            _fonts[name] = font;
-            _textures[name] = font.texture;
-        }
+    public function build(debug: Boolean = false):void {
+//        for (var name: String in _fontsParams) {
+//            var params: Array = _fontsParams[name].slice();
+//            params.push(scale);
+//            var font: FontData = FontBuilder.buildFontFromChars.apply(this, params);
+//            var font: FontData = FontBuilder.buildFontFromChars.apply(this, _fontsParams[name]);
+//            _fonts[name] = font;
+//            _textures[name] = font.texture;
+//        }
 
-        var atlasData: AtlasData = TextureAtlasBuilder.buildTextureAtlas(_textures);
-        var texture: Texture = Texture.fromBitmapData(atlasData.texture, false);
+        var atlasData: AtlasData = TextureAtlasBuilder.buildTextureAtlas(_textures, 2, true, true, debug);
+        var texture: Texture = Texture.fromBitmapData(atlasData.texture, false, true);
         var xml: XML = TextureAtlasBuilder.getTextureXml(atlasData);
 
         _textureAtlas = new TextureAtlas(texture, xml);
 
-        for (name in _fonts) {
-            font = _fonts[name];
-            texture = getTexture(name);
-
-            TextField.registerBitmapFont(new BitmapFont(texture, font.xml), name);
-        }
+//        for (name in _fonts) {
+//            font = _fonts[name];
+//            texture = getTexture(name);
+//
+//            TextField.registerBitmapFont(new BitmapFont(texture, font.xml), name);
+//        }
 
         disposeTemporaryData();
     }
@@ -113,6 +144,18 @@ public class Atlas {
             _textureAtlas.dispose();
             _textureAtlas = null;
         }
+    }
+
+    private static function scaleBitmapData(bitmapData:BitmapData, scale:Number):BitmapData {
+        scale = Math.abs(scale);
+        var width:int = (bitmapData.width * scale) || 1;
+        var height:int = (bitmapData.height * scale) || 1;
+        var transparent:Boolean = bitmapData.transparent;
+        var result:BitmapData = new BitmapData(width, height, transparent, 0x00000000);
+        var matrix:Matrix = new Matrix();
+        matrix.scale(scale, scale);
+        result.draw(bitmapData, matrix);
+        return result;
     }
 }
 }

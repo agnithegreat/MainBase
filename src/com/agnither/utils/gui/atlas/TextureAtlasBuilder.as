@@ -17,6 +17,10 @@ public class TextureAtlasBuilder {
 
         var texture: BitmapData;
         for (var key: String in textureMap) {
+//            if (scale != 1)
+//            {
+//                textureMap[key] = scaleBitmapData(textureMap[key], scale);
+//            }
             texture = textureMap[key];
             rectMap[key] = new Rectangle(0, 0, texture.width, texture.height);
         }

@@ -13,7 +13,7 @@ package com.agnither.utils.gui.components
     import starling.display.Sprite;
     import starling.textures.Texture;
 
-    public class SpriteAnimation extends AbstractComponent implements IAnimatable
+    public class TweenAnimation extends AbstractComponent implements IAnimatable
     {
         private var _frames: Vector.<Texture>;
         private var _pivots: Vector.<Point>;
@@ -24,7 +24,7 @@ package com.agnither.utils.gui.components
 
         private var _view: Image;
 
-        public function SpriteAnimation(frames: Vector.<Texture>, mc: MovieClip, pivot: Point = null, scale: Number = 1)
+        public function TweenAnimation(frames: Vector.<Texture>, mc: MovieClip, pivot: Point = null, scale: Number = 1)
         {
             _frames = frames;
 

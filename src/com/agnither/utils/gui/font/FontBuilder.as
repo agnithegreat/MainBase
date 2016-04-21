@@ -62,7 +62,7 @@ public class FontBuilder {
 
         texture.dispose();
 
-        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 2, false, false);
+        var atlas: AtlasData = TextureAtlasBuilder.buildTextureAtlas(textureMap, 1, 2, false, false);
 
         var xml: XML = <font />;
 
@@ -84,7 +84,6 @@ public class FontBuilder {
         for (code in charsMap) {
             var charData: CharData = charsMap[code];
             var rect: Rectangle = atlas.map[code];
-
             var char: XML = <char />;
             char.@id = code;
             char.@x = rect.x;

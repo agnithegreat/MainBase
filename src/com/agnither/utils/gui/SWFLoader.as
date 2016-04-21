@@ -47,7 +47,8 @@ package com.agnither.utils.gui
                 for (var i:int = 0; i < _files.length; i++)
                 {
                     var loader: Loader = new Loader();
-                    loader.loadBytes(_assets.getByteArray(_files[i]), context);
+                    var filename: String = _files[i].split("/").reverse()[0];
+                    loader.loadBytes(_assets.getByteArray(filename), context);
                     loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleSWFConverted);
                 }
             }

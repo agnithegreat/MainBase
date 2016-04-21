@@ -26,6 +26,18 @@ package com.agnither.utils.gui.components
             return RESOURCES[definition];
         }
 
+        public static function fromFlash(definition: String, atlas: String = null, manifest: Dictionary = null):AbstractComponent
+        {
+            return GUIFactory.createView(getResource(definition), atlas, manifest);
+        }
+
+        public static function createContainerFromFlash(definition: String, atlas: String = null):AbstractComponent
+        {
+            var container: AbstractComponent = new AbstractComponent();
+            container.createFromFlash(definition, atlas);
+            return container;
+        }
+
         protected function getManifest():Dictionary
         {
             return null;
@@ -58,7 +70,6 @@ package com.agnither.utils.gui.components
 
         protected function initialize():void
         {
-
         }
 
         private function handleAddedToStage(e: Event):void
@@ -70,7 +81,7 @@ package com.agnither.utils.gui.components
 
         public function createFromFlash(definition: String, atlas: String = null):void
         {
-            GUIFactory.createView(this, getResource(definition), atlas, getManifest());
+            GUIFactory.createChildren(this, getResource(definition), atlas, getManifest());
         }
 
         override public function addChild(child: DisplayObject):DisplayObject
@@ -91,15 +102,21 @@ package com.agnither.utils.gui.components
             return super.removeChild(child, dispose);
         }
 
+        public function removeAllExcept(type: String):void
+        {
+            for (var i:int = numChildren-1; i >= 0; i--)
+            {
+                if (getChildAt(i).name != type)
+                {
+                    removeChildAt(i);
+                }
+            }
+        }
+
         override public function dispose():void
         {
-            for (var key:String in this)
+            for (var key:String in _children)
             {
-                if (_children[key] is AbstractComponent)
-                {
-                    (_children[key] as AbstractComponent).destroy();
-                }
-                _children[key] = null;
                 delete _children[key];
             }
             _children = null;
@@ -107,8 +124,24 @@ package com.agnither.utils.gui.components
             super.dispose();
         }
 
+        public function destroyChildren():void
+        {
+            while (numChildren > 0)
+            {
+                var child: DisplayObject = getChildAt(0);
+                if (child is AbstractComponent)
+                {
+                    (child as AbstractComponent).destroy();
+                } else {
+                    removeChild(child, true);
+                }
+            }
+        }
+
         public function destroy():void
         {
+            destroyChildren();
+
             removeFromParent(true);
         }
     }
