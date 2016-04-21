@@ -46,6 +46,11 @@ import flash.geom.Rectangle;
             var android: Boolean = (Capabilities.version.toLowerCase().indexOf("and") > -1);
             _mobile = ios || android;
 
+            if (_graphicsSize == null)
+            {
+                _graphicsSize = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            }
+
             Starling.multitouchEnabled = true;
             Starling.handleLostContext = !ios;
 
