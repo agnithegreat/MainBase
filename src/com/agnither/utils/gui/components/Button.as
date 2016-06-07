@@ -13,7 +13,7 @@ package com.agnither.utils.gui.components
     {
         public function get label():Label
         {
-            return getChild("label") as Label;
+            return getChild("tf_label") as Label;
         }
     
         private var _defaultScale: Number;
