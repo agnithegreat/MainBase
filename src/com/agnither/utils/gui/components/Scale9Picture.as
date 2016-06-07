@@ -39,8 +39,8 @@ public class Scale9Picture extends AbstractComponent {
         addChild(_image);
 
         if (pivot) {
-            _image.pivotX = pivot.x;
-            _image.pivotY = pivot.y;
+            _image.pivotX = int(pivot.x);
+            _image.pivotY = int(pivot.y);
         }
     }
 

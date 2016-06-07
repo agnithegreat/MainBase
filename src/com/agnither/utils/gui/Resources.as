@@ -37,7 +37,7 @@ package com.agnither.utils.gui {
     }
 
     public static function getAtlasScale(name: String):Number {
-        return _atlases[name] ? (_atlases[name] as Atlas).scale : null;
+        return _atlases[name] ? (_atlases[name] as Atlas).scale : 0;
     }
 
     public static function getTexture(name: String, atlas: String = null):Texture {

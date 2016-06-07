@@ -132,16 +132,15 @@ package com.agnither.utils.gui.components
                 if (child is AbstractComponent)
                 {
                     (child as AbstractComponent).destroy();
-                } else {
-                    removeChild(child, true);
                 }
+                removeChild(child, true);
             }
         }
 
         public function destroy():void
         {
             destroyChildren();
-
+            
             removeFromParent(true);
         }
     }
