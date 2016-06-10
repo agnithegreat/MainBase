@@ -44,6 +44,7 @@ package com.agnither.utils.gui.components
             _label.fontSize = fontSize;
             _label.color = color;
             _label.bold = bold;
+            _label.isHtmlText = true;
 
             _label.vAlign = VAlign.TOP;
 //            _label.autoSize = TextFieldAutoSize.VERTICAL;

@@ -77,7 +77,7 @@ package com.agnither.utils.gui
                 var childContainer: DisplayObjectContainer = view as DisplayObjectContainer;
                 for (var i:int = 0; i < childContainer.numChildren; i++) {
                     child = childContainer.getChildAt(i);
-                    var tempChild: AbstractComponent = getChild(child, childContainer, atlas);
+                    var tempChild: AbstractComponent = getChild(child, childContainer, atlas, manifest);
                     if (child.name.search("instance") == 0)
                     {
                         newChild = tempChild;
