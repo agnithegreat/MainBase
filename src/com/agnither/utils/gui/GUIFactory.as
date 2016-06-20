@@ -21,6 +21,8 @@ package com.agnither.utils.gui
     import flash.utils.Dictionary;
     import flash.utils.getQualifiedClassName;
 
+    import starling.textures.Texture;
+
     public class GUIFactory
     {
         public static function createView(inView: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):AbstractComponent
@@ -53,7 +55,8 @@ package com.agnither.utils.gui
             } else if (parent.scale9Grid) {
                 newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), parent.scale9Grid, pivot);
             } else if (view is Shape) {
-                newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), pivot);
+//                newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), pivot);
+                newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000), pivot);
             } else if (view is Bitmap) {
                 newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData), atlas), pivot);
             } else if (view is TextField)

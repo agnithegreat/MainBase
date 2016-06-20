@@ -55,7 +55,12 @@ package com.agnither.utils.gui {
 //                return texture;
 //            }
 //        }
-        return commonAssets ? commonAssets.getTexture(name) : null;
+        texture = commonAssets ? commonAssets.getTexture(name) : null;
+        if (texture == null)
+        {
+            texture = commonAssets ? commonAssets.getTexture(name + ".png") : null;
+        }
+        return texture;
     }
 
     public static function getTextures(name: String, atlas: String = null):Vector.<Texture> {
