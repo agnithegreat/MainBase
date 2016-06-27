@@ -5,7 +5,7 @@ package com.agnither.utils
 {
     import flash.geom.Rectangle;
 
-    public class Screen
+    public class ScreenUtil
     {
         public static const viewport: Rectangle = new Rectangle();
     }

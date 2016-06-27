@@ -3,12 +3,11 @@
  */
 package
 {
-    import com.agnither.utils.Screen;
+    import com.agnither.utils.ScreenUtil;
 
     import flash.display3D.Context3DProfile;
     import flash.display3D.Context3DRenderMode;
-import flash.geom.Rectangle;
-import flash.geom.Rectangle;
+    import flash.geom.Rectangle;
     import flash.system.Capabilities;
 
     import starling.core.Starling;
@@ -80,21 +79,21 @@ import flash.geom.Rectangle;
             var scaleX: Number = viewport.width / _graphicsSize.width;
             var scaleY: Number = viewport.height / _graphicsSize.height;
             var minScale: Number = Math.min(scaleX, scaleY);
-            Screen.viewport.width = _fixedProportions ? _graphicsSize.width * minScale : _graphicsSize.width * scaleX;
-            Screen.viewport.height = _fixedProportions ? _graphicsSize.height * minScale : _graphicsSize.height * scaleY;
-            Screen.viewport.x = (viewport.width - Screen.viewport.width)/2;
-            Screen.viewport.y = (viewport.height - Screen.viewport.height)/2;
+            ScreenUtil.viewport.width = _fixedProportions ? _graphicsSize.width * minScale : _graphicsSize.width * scaleX;
+            ScreenUtil.viewport.height = _fixedProportions ? _graphicsSize.height * minScale : _graphicsSize.height * scaleY;
+            ScreenUtil.viewport.x = (viewport.width - ScreenUtil.viewport.width)/2;
+            ScreenUtil.viewport.y = (viewport.height - ScreenUtil.viewport.height)/2;
 
             if (_graphicsSize == null)
             {
-                _graphicsSize = Screen.viewport;
+                _graphicsSize = ScreenUtil.viewport;
             }
-            _starling.viewPort = Screen.viewport;
+            _starling.viewPort = ScreenUtil.viewport;
 
             _starling.stage.stageWidth = _graphicsSize.width;
             _starling.stage.stageHeight = _graphicsSize.height;
-            Screen.viewport.width = _starling.stage.stageWidth;
-            Screen.viewport.height = _starling.stage.stageHeight;
+            ScreenUtil.viewport.width = _starling.stage.stageWidth;
+            ScreenUtil.viewport.height = _starling.stage.stageHeight;
         }
 
         protected function get starling():Starling
