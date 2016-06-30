@@ -3,9 +3,9 @@
  */
 package com.agnither.utils.gui
 {
-import flash.utils.Dictionary;
-
-public class AssetController
+    import flash.utils.Dictionary;
+    
+    public class AssetController
     {
         public var _assets : Dictionary = new Dictionary();
 

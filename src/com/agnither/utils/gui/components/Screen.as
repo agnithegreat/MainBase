@@ -3,11 +3,11 @@
  */
 package com.agnither.utils.gui.components
 {
-import com.agnither.utils.gui.AssetController;
+    import com.agnither.utils.gui.AssetController;
 
-public class Screen extends AbstractComponent
+    public class Screen extends AbstractComponent
     {
-        public var assetController : AssetController = null;
+        public var assetController: AssetController;
 
         public function Screen()
         {
@@ -16,17 +16,15 @@ public class Screen extends AbstractComponent
         
         public function freeze():void
         {
-            
         }
         
         public function unfreeze():void
         {
-            
         }
 
         override public function destroy():void
         {
-            if(assetController != null)
+            if (assetController != null)
             {
                 assetController.destroy();
             }
