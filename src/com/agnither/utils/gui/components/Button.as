@@ -13,32 +13,31 @@ package com.agnither.utils.gui.components
     {
         public static const NORMAL: String = "normal";
         public static const DOWN: String = "down";
-        public static const DISABLED: String = "grey";
-        public static const OFF: String = "off";
-        
+        public static const DISABLED: String = "gray";
+
         public function get label():Label
         {
             return getChild("tf_label") as Label;
         }
 
+        public function get icon():Picture
+        {
+            return getChild("icon") as Picture;
+        }
+
         public function get normal():Picture
         {
-            return getChild("normal") as Picture;
+            return getChild("back.normal") as Picture;
         }
 
         public function get down():Picture
         {
-            return getChild("down") as Picture;
+            return getChild("back.down") as Picture;
         }
 
-        public function get off():Picture
+        public function get gray():Picture
         {
-            return getChild("off") as Picture;
-        }
-
-        public function get grey():Picture
-        {
-            return getChild("grey") as Picture;
+            return getChild("back.gray") as Picture;
         }
 
         private var _defaultScale: Number;
@@ -48,9 +47,9 @@ package com.agnither.utils.gui.components
         public function set enabled(value: Boolean):void
         {
             _enabled = value;
-            if (grey != null)
+            if (gray != null)
             {
-                setState(_enabled ? _current : DISABLED);
+                setState(_enabled ? NORMAL : DISABLED);
             } else {
                 alpha = _enabled ? 1 : 0.5;
             }
@@ -61,15 +60,18 @@ package com.agnither.utils.gui.components
             return _enabled;
         }
 
-        private var _current: String = NORMAL;
+        private var _on: Boolean = true;
         public function set on(value: Boolean):void
         {
-            _current = value ? NORMAL : OFF;
-            setState(_current);
+            _on = value;
+            if (icon != null)
+            {
+                icon.alpha = _on ? 1 : 0.5;
+            }
         }
         public function get on():Boolean
         {
-            return _current == NORMAL;
+            return _on;
         }
     
         public function Button()
@@ -104,7 +106,7 @@ package com.agnither.utils.gui.components
                     case TouchPhase.ENDED:
                         if (down != null)
                         {
-                            setState(_current);
+                            setState(NORMAL);
                         } else {
                             animateEnded();
                         }
@@ -124,13 +126,9 @@ package com.agnither.utils.gui.components
             {
                 down.visible = state == DOWN;
             }
-            if (off != null)
+            if (gray != null)
             {
-                off.visible = state == OFF;
-            }
-            if (grey != null)
-            {
-                grey.visible = state == DISABLED;
+                gray.visible = state == DISABLED;
             }
         }
     
