@@ -25,24 +25,22 @@ package com.agnither.utils.gui
 
     public class GUIFactory
     {
-        public static function createView(inView: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):AbstractComponent
+        public static function createView(inView: DisplayObjectContainer, scale: Number = 1, manifest: Dictionary = null):AbstractComponent
         {
-            return getChild(inView, inView, atlas, manifest);
+            return getChild(inView, inView, scale, manifest);
         }
 
-        public static function createChildren(parent: AbstractComponent, inView: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):void
+        public static function createChildren(parent: AbstractComponent, inView: DisplayObjectContainer, scale: Number = 1, manifest: Dictionary = null):void
         {
             for (var i:int = 0; i < inView.numChildren; i++) {
                 var child: DisplayObject = inView.getChildAt(i);
-                var newChild: AbstractComponent = getChild(child, inView, atlas, manifest);
+                var newChild: AbstractComponent = getChild(child, inView, scale, manifest);
                 parent.addChild(newChild);
             }
         }
 
-        private static function getChild(view: DisplayObject, parent: DisplayObjectContainer, atlas: String = null, manifest: Dictionary = null):AbstractComponent
+        private static function getChild(view: DisplayObject, parent: DisplayObjectContainer, scale: Number = 1, manifest: Dictionary = null):AbstractComponent
         {
-            var scale: Number = Resources.getAtlasScale(atlas);
-
             var newChild: AbstractComponent;
 
             var pivotRect: Rectangle = view.getBounds(view);
@@ -53,12 +51,12 @@ package com.agnither.utils.gui
                 var ComponentClass: Class = manifest[className];
                 newChild = new ComponentClass();
             } else if (parent.scale9Grid) {
-                newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), parent.scale9Grid, pivot);
+                newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName(parent)), parent.scale9Grid, pivot);
             } else if (view is Shape) {
 //                newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), pivot);
                 newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000), pivot);
             } else if (view is Bitmap) {
-                newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData), atlas), pivot);
+                newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), pivot);
             } else if (view is TextField)
             {
                 var tf:TextField = view as TextField;
@@ -68,7 +66,7 @@ package com.agnither.utils.gui
                 (newChild as Label).setFilters(tf.filters, scale);
             } else if (view is MovieClip && (view as MovieClip).totalFrames > 1)
             {
-                newChild = new SpriteAnimation(Resources.getTextures(getQualifiedClassName(parent), atlas), view as MovieClip, pivot, scale);
+                newChild = new SpriteAnimation(Resources.getTextures(getQualifiedClassName(parent)), view as MovieClip, pivot, scale);
             } else if (view is DisplayObjectContainer) {
                 if (view.name.search("btn_") == 0) {
                     newChild = new Button();
@@ -80,7 +78,7 @@ package com.agnither.utils.gui
                 var childContainer: DisplayObjectContainer = view as DisplayObjectContainer;
                 for (var i:int = 0; i < childContainer.numChildren; i++) {
                     child = childContainer.getChildAt(i);
-                    var tempChild: AbstractComponent = getChild(child, childContainer, atlas, manifest);
+                    var tempChild: AbstractComponent = getChild(child, childContainer, scale, manifest);
                     if (child.name.search("instance") == 0)
                     {
                         newChild = tempChild;

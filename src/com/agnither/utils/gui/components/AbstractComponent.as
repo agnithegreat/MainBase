@@ -26,15 +26,15 @@ package com.agnither.utils.gui.components
             return RESOURCES[definition];
         }
 
-        public static function fromFlash(definition: String, atlas: String = null, manifest: Dictionary = null):AbstractComponent
+        public static function fromFlash(definition: String, scale: Number = 1, manifest: Dictionary = null):AbstractComponent
         {
-            return GUIFactory.createView(getResource(definition), atlas, manifest);
+            return GUIFactory.createView(getResource(definition), scale, manifest);
         }
 
-        public static function createContainerFromFlash(definition: String, atlas: String = null):AbstractComponent
+        public static function createContainerFromFlash(definition: String, scale: Number = 1):AbstractComponent
         {
             var container: AbstractComponent = new AbstractComponent();
-            container.createFromFlash(definition, atlas);
+            container.createFromFlash(definition, scale);
             return container;
         }
 
@@ -79,9 +79,9 @@ package com.agnither.utils.gui.components
             initialize();
         }
 
-        public function createFromFlash(definition: String, atlas: String = null):void
+        public function createFromFlash(definition: String, scale: Number = 1):void
         {
-            GUIFactory.createChildren(this, getResource(definition), atlas, getManifest());
+            GUIFactory.createChildren(this, getResource(definition), scale, getManifest());
         }
 
         override public function addChild(child: DisplayObject):DisplayObject
