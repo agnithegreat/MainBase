@@ -3,11 +3,11 @@
  */
 package com.agnither.utils.gui.components
 {
-    import com.agnither.utils.gui.AssetController;
+    import com.agnither.utils.gui.assets.ResourceManager;
 
     public class Screen extends AbstractComponent
     {
-        public var assetController: AssetController;
+        public var resourceManager: ResourceManager;
 
         public function Screen()
         {
@@ -24,9 +24,9 @@ package com.agnither.utils.gui.components
 
         override public function destroy():void
         {
-            if (assetController != null)
+            if (resourceManager != null)
             {
-                assetController.destroy();
+                resourceManager.destroy();
             }
             super.destroy();
         }

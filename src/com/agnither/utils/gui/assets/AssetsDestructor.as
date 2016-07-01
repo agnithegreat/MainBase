@@ -1,7 +1,7 @@
 /**
  * Created by alekseykabanov on 30.06.16.
  */
-package com.agnither.utils.gui
+package com.agnither.utils.gui.assets
 {
     public class AssetsDestructor
     {

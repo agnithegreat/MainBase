@@ -1,16 +1,23 @@
 /**
  * Created by alekseykabanov on 30.06.16.
  */
-package com.agnither.utils.gui
+package com.agnither.utils.gui.assets
 {
     import flash.utils.Dictionary;
     
-    public class AssetController
+    public class ResourceController
     {
-        public var _assets : Dictionary = new Dictionary();
-
-        public function AssetController()
+        private var _name: String;
+        public function get name():String
         {
+            return _name;
+        }
+        
+        private var _assets: Dictionary = new Dictionary(true);
+
+        public function ResourceController(name: String)
+        {
+            _name = name;
         }
 
         public function addAssets(assetsDestructor : AssetsDestructor):void
