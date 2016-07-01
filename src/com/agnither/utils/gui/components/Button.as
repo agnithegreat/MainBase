@@ -46,6 +46,8 @@ package com.agnither.utils.gui.components
         private var _enabled: Boolean = true;
         public function set enabled(value: Boolean):void
         {
+            if (_enabled == value) return;
+            
             _enabled = value;
             if (gray != null)
             {
