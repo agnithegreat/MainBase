@@ -47,7 +47,7 @@ package com.agnither.utils.gui.components
             _label.isHtmlText = true;
 
             _label.vAlign = VAlign.TOP;
-//            _label.autoSize = TextFieldAutoSize.VERTICAL;
+            _label.autoScale = true;
             addChild(_label);
 
             if (pivot) {
