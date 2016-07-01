@@ -66,8 +66,8 @@ package com.agnither.utils.gui.components
             else if (scale <= 0.5) scale = 0.5;
             else scale = 1;
 
-//            var properties: Array = ["blurX", "blurY", "distance", "strength"];
-            var properties: Array = ["blurX", "blurY", "distance"];
+            var properties: Array = ["blurX", "blurY", "distance", "strength"];
+//            var properties: Array = ["blurX", "blurY", "distance"];
             for (var i:int = 0; i < filters.length; i++)
             {
                 var filter: Object = filters[i];
