@@ -7,11 +7,23 @@ package com.agnither.utils.gui.components
 
     public class Screen extends AbstractComponent
     {
+        public static const READY: String = "ready_Screen";
+        
         public var resourceManager: ResourceManager;
 
         public function Screen()
         {
             super();
+        }
+        
+        public function init():void
+        {
+            ready();
+        }
+        
+        protected function ready():void
+        {
+            dispatchEventWith(READY);
         }
         
         public function freeze():void
