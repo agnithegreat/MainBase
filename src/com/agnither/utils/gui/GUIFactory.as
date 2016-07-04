@@ -11,12 +11,14 @@ package com.agnither.utils.gui
     import com.agnither.utils.gui.components.SpriteAnimation;
 
     import flash.display.Bitmap;
+    import flash.display.BitmapData;
     import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
     import flash.display.MovieClip;
     import flash.display.Shape;
     import flash.geom.Point;
     import flash.geom.Rectangle;
+    import flash.sampler.getSize;
     import flash.text.TextField;
     import flash.utils.Dictionary;
     import flash.utils.getQualifiedClassName;
@@ -57,6 +59,7 @@ package com.agnither.utils.gui
                 newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000), pivot);
             } else if (view is Bitmap) {
                 newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), pivot);
+                (view as Bitmap).bitmapData.dispose();
             } else if (view is TextField)
             {
                 var tf:TextField = view as TextField;
