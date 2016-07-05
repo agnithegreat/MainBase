@@ -6,6 +6,7 @@ package com.agnither.utils.gui.components
     import flash.geom.Point;
 
     import starling.text.TextField;
+    import starling.utils.HAlign;
     import starling.utils.VAlign;
 
     public class Label extends AbstractComponent
@@ -36,8 +37,18 @@ package com.agnither.utils.gui.components
         public function set color(value: uint):void {
             _label.color = value;
         }
+        
+        public function set vAlign(value: String):void
+        {
+            _label.vAlign = value;
+        }
 
-        public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false, pivot: Point = null) {
+        public function set hAlign(value: String):void
+        {
+            _label.hAlign = value;
+        }
+
+        public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false, align: String = HAlign.CENTER, pivot: Point = null) {
             _label = new TextField(width, height, text);
 
             _label.fontName = fontName;
@@ -47,6 +58,7 @@ package com.agnither.utils.gui.components
             _label.isHtmlText = true;
 
             _label.vAlign = VAlign.TOP;
+            _label.hAlign = align;
             _label.autoScale = true;
             addChild(_label);
 

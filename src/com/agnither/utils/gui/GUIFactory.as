@@ -65,7 +65,7 @@ package com.agnither.utils.gui
                 var tf:TextField = view as TextField;
 //                newChild = new Label(view.width * scale, view.height * scale, tf.text, getQualifiedClassName(parent), -1, 0xFFFFFF, false, pivot);
 //                newChild = new Label(view.width * scale, view.height * scale, "", tf.defaultTextFormat.font+tf.defaultTextFormat.size, -1, 0xFFFFFF, false, pivot);
-                newChild = new Label(view.width * scale, view.height * scale, tf.text, tf.defaultTextFormat.font, int(tf.defaultTextFormat.size) * scale, uint(tf.defaultTextFormat.color), false, pivot);
+                newChild = new Label(view.width * scale, view.height * scale, tf.text, tf.defaultTextFormat.font, int(tf.defaultTextFormat.size) * scale, uint(tf.defaultTextFormat.color), false, tf.defaultTextFormat.align, pivot);
                 (newChild as Label).setFilters(tf.filters, scale);
             } else if (view is MovieClip && (view as MovieClip).totalFrames > 1)
             {
