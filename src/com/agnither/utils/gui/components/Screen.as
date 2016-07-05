@@ -5,9 +5,9 @@ package com.agnither.utils.gui.components
 {
     import com.agnither.utils.gui.assets.ResourceManager;
 
-    public class Screen extends AbstractComponent
+    public class Screen extends Popup
     {
-        public static const READY: String = "ready_Screen";
+        public static const READY: String = "Screen.READY";
         
         public var resourceManager: ResourceManager;
 
