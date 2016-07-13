@@ -8,6 +8,33 @@ package com.agnither.utils.gui.assets
     public class ResourceManager
     {
         private var _resources: Dictionary = new Dictionary(true);
+        
+        public function isAdded(name: String):Boolean
+        {
+            return _resources[name] != null;
+        }
+        
+        public function isLoaded(name: String):Boolean
+        {
+            return isAdded(name) && _resources[name].loaded;
+        }
+        
+        public function countResources(loaded: Boolean, filter: String = null):int
+        {
+            if (filter == null)
+            {
+                filter = "";
+            }
+            var count: int = 0;
+            for each (var controller: ResourceController in _resources)
+            {
+                if (controller != null && controller.name.search(filter) >= 0 && (!loaded || controller.loaded))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
 
         public function ResourceManager()
         {

@@ -13,6 +13,12 @@ package com.agnither.utils.gui.assets
             return _name;
         }
         
+        private var _loaded: Boolean;
+        public function get loaded():Boolean
+        {
+            return _loaded;
+        }
+        
         private var _assets: Dictionary = new Dictionary(true);
 
         public function ResourceController(name: String)
@@ -28,6 +34,11 @@ package com.agnither.utils.gui.assets
         public function removeAssets(name : String):void
         {
             delete _assets[name];
+        }
+        
+        public function setLoaded():void
+        {
+            _loaded = true;
         }
 
         public function destroy():void
