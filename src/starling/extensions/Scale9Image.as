@@ -51,8 +51,8 @@ public class Scale9Image extends Sprite {
 
     public function Scale9Image(texture:Texture, centerRect:Rectangle) {
         _texture = texture;
-        _tW = texture.nativeWidth;
-        _tH = texture.nativeHeight;
+        _tW = texture.width;
+        _tH = texture.height;
         _grid = centerRect;
 
         _width = _tW;
@@ -60,13 +60,13 @@ public class Scale9Image extends Sprite {
 
         _tl = new Image(Texture.fromTexture(texture, new Rectangle(0, 0, _grid.x, _grid.y)));
         _tc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, 0, _grid.width, _grid.y)));
-        _tr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, 0, texture.nativeWidth - (_grid.x + _grid.width), _grid.y)));
+        _tr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, 0, _tW - (_grid.x + _grid.width), _grid.y)));
         _cl = new Image(Texture.fromTexture(texture, new Rectangle(0, _grid.y, _grid.x, _grid.height)));
         _cc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, _grid.y, _grid.width, _grid.height)));
-        _cr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y, texture.nativeWidth - (_grid.x + _grid.width), _grid.height)));
-        _bl = new Image(Texture.fromTexture(texture, new Rectangle(0, _grid.y + _grid.height, _grid.x, texture.nativeHeight - (_grid.y + _grid.height))));
-        _bc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, _grid.y + _grid.height, _grid.width, texture.nativeHeight - (_grid.y + _grid.height))));
-        _br = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y + _grid.height, texture.nativeWidth - (_grid.x + _grid.width), texture.nativeHeight - (_grid.y + _grid.height))));
+        _cr = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y, _tW - (_grid.x + _grid.width), _grid.height)));
+        _bl = new Image(Texture.fromTexture(texture, new Rectangle(0, _grid.y + _grid.height, _grid.x, _tH - (_grid.y + _grid.height))));
+        _bc = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x, _grid.y + _grid.height, _grid.width, _tH - (_grid.y + _grid.height))));
+        _br = new Image(Texture.fromTexture(texture, new Rectangle(_grid.x + _grid.width, _grid.y + _grid.height, _tW - (_grid.x + _grid.width), _tH - (_grid.y + _grid.height))));
 
         _items = [
             [_tl, _cl, _bl],
