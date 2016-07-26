@@ -20,28 +20,34 @@ package com.agnither.utils.gui.components
             return getChild("tf_label") as Label;
         }
 
-        public function get icon():Picture
+        public function get icon():AbstractComponent
         {
-            return getChild("icon") as Picture;
+            return getChild("icon");
         }
 
-        public function get normal():Picture
+        public function get normal():AbstractComponent
         {
-            return getChild("back.normal") as Picture;
+            return getChild("back.normal");
         }
 
-        public function get down():Picture
+        public function get down():AbstractComponent
         {
-            return getChild("back.down") as Picture;
+            return getChild("back.down");
         }
 
-        public function get gray():Picture
+        public function get gray():AbstractComponent
         {
-            return getChild("back.gray") as Picture;
+            return getChild("back.gray");
+        }
+        
+        private var _mode: String;
+        public function set mode(value: String):void
+        {
+            _mode = value;
         }
 
         private var _defaultScale: Number;
-        private var _scaleMod: Number = 0.95;
+        private var _scaleMod: Number = 1.2;
         
         private var _enabled: Boolean = true;
         public function set enabled(value: Boolean):void
@@ -88,6 +94,8 @@ package com.agnither.utils.gui.components
             useHandCursor = true;
 
             _defaultScale = scaleX;
+
+            _mode = down ? ButtonMode.STATE : ButtonMode.SCALE;
         }
         
         private function handleTouch(e: TouchEvent):void
@@ -98,18 +106,20 @@ package com.agnither.utils.gui.components
             if (touch) {
                 switch (touch.phase) {
                     case TouchPhase.BEGAN:
-                        if (down != null)
+                        if (_mode == ButtonMode.STATE)
                         {
                             setState(DOWN);
-                        } else {
+                        } else if (_mode == ButtonMode.SCALE)
+                        {
                             animateBegan();
                         }
                         break;
                     case TouchPhase.ENDED:
-                        if (down != null)
+                        if (_mode == ButtonMode.STATE)
                         {
                             setState(NORMAL);
-                        } else {
+                        } else if (_mode == ButtonMode.SCALE)
+                        {
                             animateEnded();
                         }
                         dispatchEventWith(Event.TRIGGERED, true);
