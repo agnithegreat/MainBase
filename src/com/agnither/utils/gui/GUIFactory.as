@@ -125,12 +125,12 @@ package com.agnither.utils.gui
 
         private static function getScaledRect(rect: Rectangle, scale: Number):Rectangle
         {
-            var rect: Rectangle = rect.clone();
-            rect.x *= scale;
-            rect.y *= scale;
-            rect.width *= scale;
-            rect.height *= scale;
-            return rect;
+            var scaledRect: Rectangle = rect.clone();
+            scaledRect.x *= scale;
+            scaledRect.y *= scale;
+            scaledRect.width *= scale;
+            scaledRect.height *= scale;
+            return scaledRect;
         }
     }
 }
