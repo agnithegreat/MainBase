@@ -75,7 +75,7 @@ package
 
         private function handleResize(event: Event):void
         {
-            var viewport: Rectangle = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            var viewport: Rectangle = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
             var scaleX: Number = viewport.width / _graphicsSize.width;
             var scaleY: Number = viewport.height / _graphicsSize.height;
             var minScale: Number = Math.min(scaleX, scaleY);
