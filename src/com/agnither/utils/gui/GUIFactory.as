@@ -58,7 +58,6 @@ package com.agnither.utils.gui
                 newChild = new ComponentClass();
             } else if (view is Shape)
             {
-//                newChild = new Picture(Resources.getTexture(getQualifiedClassName(parent), atlas), pivot);
                 newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000), pivot);
             } else if (view is Bitmap)
             {
@@ -88,20 +87,12 @@ package com.agnither.utils.gui
                     newChild = new AbstractComponent();
                 }
 
-                var child: DisplayObject;
                 var childContainer: DisplayObjectContainer = view as DisplayObjectContainer;
                 for (var i:int = 0; i < childContainer.numChildren; i++)
                 {
-                    child = childContainer.getChildAt(i);
+                    var child: DisplayObject = childContainer.getChildAt(i);
                     var tempChild: AbstractComponent = getChild(child, childContainer, scale, manifest, scale9GridTarget);
-                    if (child.name.search("instance") == 0)
-                    {
-                        newChild = tempChild;
-                        break;
-                    } else {
-                        newChild.addChild(tempChild);
-                    }
-                    child = null;
+                    newChild.addChild(tempChild);
                 }
             }
 
@@ -119,7 +110,7 @@ package com.agnither.utils.gui
             }
             newChild.x *= scale;
             newChild.y *= scale;
-            newChild.name = view.name;
+            newChild.name = view.name.search("instance") == 0 ? "instance" : view.name;
             return newChild;
         }
 
