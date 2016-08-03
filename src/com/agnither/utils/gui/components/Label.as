@@ -3,8 +3,6 @@
  */
 package com.agnither.utils.gui.components
 {
-    import flash.geom.Point;
-
     import starling.text.TextField;
     import starling.utils.HAlign;
     import starling.utils.VAlign;
@@ -13,28 +11,35 @@ package com.agnither.utils.gui.components
     {
         private var _label: TextField;
 
-        override public function set width(value: Number):void {
+        override public function set width(value: Number):void
+        {
             _label.width = value;
         }
-        override public function get width():Number {
+        override public function get width():Number
+        {
             return _label.width;
         }
 
-        override public function set height(value: Number):void {
+        override public function set height(value: Number):void
+        {
             _label.height = value;
         }
-        override public function get height():Number {
+        override public function get height():Number
+        {
             return _label.height;
         }
 
-        public function set text(value: String):void {
+        public function set text(value: String):void
+        {
             _label.text = value;
         }
-        public function get text():String {
+        public function get text():String
+        {
             return _label.text;
         }
 
-        public function set color(value: uint):void {
+        public function set color(value: uint):void
+        {
             _label.color = value;
         }
         
@@ -48,7 +53,8 @@ package com.agnither.utils.gui.components
             _label.hAlign = value;
         }
 
-        public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false, align: String = HAlign.CENTER, pivot: Point = null) {
+        public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false, align: String = HAlign.CENTER)
+        {
             _label = new TextField(width, height, text);
 
             _label.fontName = fontName;
@@ -61,11 +67,6 @@ package com.agnither.utils.gui.components
             _label.hAlign = align;
             _label.autoScale = true;
             addChild(_label);
-
-            if (pivot) {
-                _label.pivotX = int(pivot.x);
-                _label.pivotY = int(pivot.y);
-            }
 
             var gap: Number = height * 0.15;
             _label.y -= gap;
@@ -94,7 +95,8 @@ package com.agnither.utils.gui.components
             _label.nativeFilters = filters;
         }
 
-        override public function destroy():void {
+        override public function destroy():void
+        {
             _label = null;
 
             super.dispose();

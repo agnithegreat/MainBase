@@ -15,7 +15,6 @@ package com.agnither.utils.gui
     import flash.display.DisplayObjectContainer;
     import flash.display.MovieClip;
     import flash.display.Shape;
-    import flash.geom.Point;
     import flash.geom.Rectangle;
     import flash.text.TextField;
     import flash.utils.Dictionary;
@@ -48,9 +47,6 @@ package com.agnither.utils.gui
 
             var newChild: AbstractComponent;
 
-            var pivotRect: Rectangle = view.getBounds(view);
-            var pivot: Point = new Point(-pivotRect.x * scale, -pivotRect.y * scale);
-
             var className: String = getQualifiedClassName(view);
             if (manifest && manifest[className])
             {
@@ -58,14 +54,14 @@ package com.agnither.utils.gui
                 newChild = new ComponentClass();
             } else if (view is Shape)
             {
-                newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000), pivot);
+                newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000));
             } else if (view is Bitmap)
             {
                 if (scale9GridTarget != null)
                 {
-                    newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), getScaledRect(scale9GridTarget.scale9Grid, scale), pivot);
+                    newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), getScaledRect(scale9GridTarget.scale9Grid, scale));
                 } else {
-                    newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), pivot);
+                    newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)));
                 }
                 (view as Bitmap).bitmapData.dispose();
             } else if (view is TextField)
@@ -73,11 +69,11 @@ package com.agnither.utils.gui
                 var tf:TextField = view as TextField;
 //                newChild = new Label(view.width * scale, view.height * scale, tf.text, getQualifiedClassName(parent), -1, 0xFFFFFF, false, pivot);
 //                newChild = new Label(view.width * scale, view.height * scale, "", tf.defaultTextFormat.font+tf.defaultTextFormat.size, -1, 0xFFFFFF, false, pivot);
-                newChild = new Label(view.width * scale, view.height * scale, tf.text, tf.defaultTextFormat.font, int(tf.defaultTextFormat.size) * scale, uint(tf.defaultTextFormat.color), false, tf.defaultTextFormat.align, pivot);
+                newChild = new Label(view.width * scale, view.height * scale, tf.text, tf.defaultTextFormat.font, int(tf.defaultTextFormat.size) * scale, uint(tf.defaultTextFormat.color), false, tf.defaultTextFormat.align);
                 (newChild as Label).setFilters(tf.filters, scale);
             } else if (view is MovieClip && (view as MovieClip).totalFrames > 1)
             {
-                newChild = new SpriteAnimation(Resources.getTextures(getQualifiedClassName(parent)), view as MovieClip, pivot, scale);
+                newChild = new SpriteAnimation(Resources.getTextures(getQualifiedClassName(parent)), view as MovieClip, scale);
             } else if (view is DisplayObjectContainer)
             {
                 if (view.name.search("btn_") == 0)
@@ -97,6 +93,14 @@ package com.agnither.utils.gui
             }
 
             newChild.transformationMatrix = view.transform.matrix;
+            if (view is Shape)
+            {
+                newChild.scaleX = view.scaleX;
+                newChild.scaleY = view.scaleY;
+            }
+            newChild.x = view.x * scale;
+            newChild.y = view.y * scale;
+
             if (scale9GridTarget != null)
             {
                 if (newChild is Scale9Picture)
@@ -108,8 +112,6 @@ package com.agnither.utils.gui
                     newChild.scaleY = 1;
                 }
             }
-            newChild.x *= scale;
-            newChild.y *= scale;
             newChild.name = view.name.search("instance") == 0 ? "instance" : view.name;
             return newChild;
         }

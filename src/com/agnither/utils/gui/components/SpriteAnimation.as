@@ -10,7 +10,6 @@ package com.agnither.utils.gui.components
 
     import starling.animation.IAnimatable;
     import starling.display.Image;
-    import starling.display.Sprite;
     import starling.textures.Texture;
 
     public class SpriteAnimation extends AbstractComponent implements IAnimatable
@@ -24,7 +23,7 @@ package com.agnither.utils.gui.components
 
         private var _view: Image;
 
-        public function SpriteAnimation(frames: Vector.<Texture>, mc: MovieClip, pivot: Point = null, scale: Number = 1)
+        public function SpriteAnimation(frames: Vector.<Texture>, mc: MovieClip, scale: Number = 1)
         {
             _frames = frames;
 
@@ -47,9 +46,6 @@ package com.agnither.utils.gui.components
 
             _view = new Image(_frames[0]);
             addChild(_view);
-
-            pivotX = pivot.x;
-            pivotY = pivot.y;
 
             _currentTime = 0;
             gotoFrame(1);

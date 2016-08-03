@@ -3,8 +3,6 @@
  */
 package com.agnither.utils.gui.components
 {
-    import flash.geom.Point;
-    
     import starling.display.Image;
     import starling.textures.Texture;
     
@@ -26,16 +24,10 @@ package com.agnither.utils.gui.components
             _image.color = value;
         }
     
-        public function Picture(texture: Texture, pivot: Point = null)
+        public function Picture(texture: Texture)
         {
             _image = new Image(texture);
             addChild(_image);
-    
-            if (pivot)
-            {
-                _image.pivotX = int(pivot.x);
-                _image.pivotY = int(pivot.y);
-            }                   
         }
     
         override public function dispose():void
