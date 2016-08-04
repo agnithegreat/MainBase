@@ -17,6 +17,9 @@ package
     {
         private var _mainClass: Class;
 
+        protected var _screenResolution: Rectangle;
+        protected var _viewport: Rectangle;
+        
         protected var _graphicsSize: Rectangle;
         protected var _fixedProportions: Boolean;
         protected var _mobile: Boolean;
@@ -25,6 +28,8 @@ package
         public function StarlingMainBase(mainClass: Class, graphicsSize: Rectangle = null, fixedProportions: Boolean = false, scale:String = null, align:String = null)
         {
             _mainClass = mainClass;
+            
+            _screenResolution = new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY);
 
             _graphicsSize = graphicsSize;
             _fixedProportions = fixedProportions;
@@ -47,7 +52,7 @@ package
 
             if (_graphicsSize == null)
             {
-                _graphicsSize = _mobile ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+                _graphicsSize = _mobile ? _screenResolution : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
             }
 
             Starling.multitouchEnabled = true;
@@ -75,14 +80,14 @@ package
 
         private function handleResize(event: Event):void
         {
-            var viewport: Rectangle = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-            var scaleX: Number = viewport.width / _graphicsSize.width;
-            var scaleY: Number = viewport.height / _graphicsSize.height;
+            _viewport = _mobile ? _screenResolution : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            var scaleX: Number = _viewport.width / _graphicsSize.width;
+            var scaleY: Number = _viewport.height / _graphicsSize.height;
             var minScale: Number = Math.min(scaleX, scaleY);
             ScreenUtil.viewport.width = _fixedProportions ? _graphicsSize.width * minScale : _graphicsSize.width * scaleX;
             ScreenUtil.viewport.height = _fixedProportions ? _graphicsSize.height * minScale : _graphicsSize.height * scaleY;
-            ScreenUtil.viewport.x = (viewport.width - ScreenUtil.viewport.width)/2;
-            ScreenUtil.viewport.y = (viewport.height - ScreenUtil.viewport.height)/2;
+            ScreenUtil.viewport.x = (_viewport.width - ScreenUtil.viewport.width)/2;
+            ScreenUtil.viewport.y = (_viewport.height - ScreenUtil.viewport.height)/2;
 
             if (_graphicsSize == null)
             {
