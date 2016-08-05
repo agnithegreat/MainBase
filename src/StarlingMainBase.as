@@ -17,20 +17,20 @@ package
     {
         private var _mainClass: Class;
 
-        protected var _screenResolution: Rectangle;
         protected var _viewport: Rectangle;
+        
+        protected var _ios: Boolean;
+        protected var _android: Boolean;
+        protected var _mobile: Boolean;
         
         protected var _graphicsSize: Rectangle;
         protected var _fixedProportions: Boolean;
-        protected var _mobile: Boolean;
         protected var _starling: Starling;
 
         public function StarlingMainBase(mainClass: Class, graphicsSize: Rectangle = null, fixedProportions: Boolean = false, scale:String = null, align:String = null)
         {
             _mainClass = mainClass;
             
-            _screenResolution = new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY);
-
             _graphicsSize = graphicsSize;
             _fixedProportions = fixedProportions;
 
@@ -46,19 +46,19 @@ package
 
         protected function initializeStarling():void
         {
-            var ios: Boolean = (Capabilities.version.toLowerCase().indexOf("ios") > -1);
-            var android: Boolean = (Capabilities.version.toLowerCase().indexOf("and") > -1);
-            _mobile = ios || android;
+            _ios = (Capabilities.version.toLowerCase().indexOf("ios") > -1);
+            _android = (Capabilities.version.toLowerCase().indexOf("and") > -1);
+            _mobile = _ios || _android;
 
             if (_graphicsSize == null)
             {
-                _graphicsSize = _mobile ? _screenResolution : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+                _graphicsSize = _ios ? new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
             }
 
             Starling.multitouchEnabled = true;
-            Starling.handleLostContext = !ios;
+            Starling.handleLostContext = !_ios;
 
-            _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
+            _starling = new Starling(_mainClass, stage, ScreenUtil.viewport, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
             handleResize(null);
 
             _starling.addEventListener(Event.ROOT_CREATED, handleRootCreated);
@@ -80,7 +80,7 @@ package
 
         private function handleResize(event: Event):void
         {
-            _viewport = _mobile ? _screenResolution : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            _viewport = _ios ? new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
             var scaleX: Number = _viewport.width / _graphicsSize.width;
             var scaleY: Number = _viewport.height / _graphicsSize.height;
             var minScale: Number = Math.min(scaleX, scaleY);
@@ -93,6 +93,7 @@ package
             {
                 _graphicsSize = ScreenUtil.viewport;
             }
+            
             _starling.viewPort = ScreenUtil.viewport;
 
             _starling.stage.stageWidth = _graphicsSize.width;
