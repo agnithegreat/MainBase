@@ -56,7 +56,7 @@ package
             }
 
             Starling.multitouchEnabled = true;
-            Starling.handleLostContext = !_ios;
+            Starling.handleLostContext = true;
 
             _starling = new Starling(_mainClass, stage, ScreenUtil.viewport, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
             handleResize(null);
