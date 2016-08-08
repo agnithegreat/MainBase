@@ -28,7 +28,7 @@ package com.agnither.utils.gui.assets
 
         public function addAssets(assetsDestructor : AssetsDestructor):void
         {
-            _assets[assetsDestructor.name] = assetsDestructor;
+            _assets[assetsDestructor.fullName] = assetsDestructor;
         }
 
         public function removeAssets(name : String):void
