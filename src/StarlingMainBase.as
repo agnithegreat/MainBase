@@ -22,7 +22,8 @@ package
         protected var _ios: Boolean;
         protected var _android: Boolean;
         protected var _mobile: Boolean;
-        
+
+        protected var _resizeGraphics: Boolean;
         protected var _graphicsSize: Rectangle;
         protected var _fixedProportions: Boolean;
         protected var _starling: Starling;
@@ -30,8 +31,9 @@ package
         public function StarlingMainBase(mainClass: Class, graphicsSize: Rectangle = null, fixedProportions: Boolean = false, scale:String = null, align:String = null)
         {
             _mainClass = mainClass;
-            
+
             _graphicsSize = graphicsSize;
+            _resizeGraphics = _graphicsSize == null;
             _fixedProportions = fixedProportions;
 
             super(scale, align);
@@ -50,15 +52,10 @@ package
             _android = (Capabilities.version.toLowerCase().indexOf("and") > -1);
             _mobile = _ios || _android;
 
-            if (_graphicsSize == null)
-            {
-                _graphicsSize = _ios ? new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-            }
-
             Starling.multitouchEnabled = true;
             Starling.handleLostContext = true;
 
-            _starling = new Starling(_mainClass, stage, ScreenUtil.viewport, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
+            _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
             handleResize(null);
 
             _starling.addEventListener(Event.ROOT_CREATED, handleRootCreated);
@@ -80,6 +77,11 @@ package
 
         private function handleResize(event: Event):void
         {
+            if (_resizeGraphics)
+            {
+                _graphicsSize = _ios ? new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+            }
+
             _viewport = _ios ? new Rectangle(0, 0, Capabilities.screenResolutionX, Capabilities.screenResolutionY) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
             var scaleX: Number = _viewport.width / _graphicsSize.width;
             var scaleY: Number = _viewport.height / _graphicsSize.height;
@@ -89,11 +91,6 @@ package
             ScreenUtil.viewport.x = (_viewport.width - ScreenUtil.viewport.width)/2;
             ScreenUtil.viewport.y = (_viewport.height - ScreenUtil.viewport.height)/2;
 
-            if (_graphicsSize == null)
-            {
-                _graphicsSize = ScreenUtil.viewport;
-            }
-            
             _starling.viewPort = ScreenUtil.viewport;
 
             _starling.stage.stageWidth = _graphicsSize.width;
@@ -113,13 +110,13 @@ package
 
         protected function set showStats(value: Boolean):void
         {
-            starling.showStats = value;
+            _starling.showStats = value;
         }
 
         protected function setSize(width: int, height: int):void
         {
-            starling.stage.stageWidth = width;
-            starling.stage.stageHeight = height;
+            _starling.stage.stageWidth = width;
+            _starling.stage.stageHeight = height;
         }
     }
 }
