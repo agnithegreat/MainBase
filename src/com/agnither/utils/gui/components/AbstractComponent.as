@@ -9,12 +9,19 @@ package com.agnither.utils.gui.components
     import flash.utils.Dictionary;
     import flash.utils.getDefinitionByName;
 
+    import starling.animation.Transitions;
+
+    import starling.core.Starling;
+
     import starling.display.DisplayObject;
     import starling.display.Sprite;
     import starling.events.Event;
 
     public class AbstractComponent extends Sprite
     {
+        public static const SHOW_MARKER: String = "show";
+        public static const HIDE_MARKER: String = "hide";
+        
         private static const RESOURCES: Dictionary = new Dictionary(true);
         public static function getResource(definition: String):DisplayObjectContainer
         {
@@ -70,6 +77,23 @@ package com.agnither.utils.gui.components
 
         protected function initialize():void
         {
+        }
+        
+        protected function moveToMarker(name: String, time: Number = 0.4):void
+        {
+            var marker: AbstractComponent = getChild(name);
+            if (marker == null)
+            {
+                throw new Error("there is no marker with name '" + name + "'");
+            }
+            
+            if (time > 0)
+            {
+                Starling.juggler.tween(this, time, {"pivotX": marker.x, "pivotY": marker.y, transition: Transitions.EASE_OUT});
+            } else {
+                pivotX = marker.x;
+                pivotY = marker.y;
+            }
         }
 
         private function handleAddedToStage(e: Event):void
