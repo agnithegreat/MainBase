@@ -21,6 +21,7 @@ package com.agnither.utils.gui.components
     {
         public static const SHOW_MARKER: String = "show";
         public static const HIDE_MARKER: String = "hide";
+        protected static const defaultTween: Number = 0.4;
         
         private static const RESOURCES: Dictionary = new Dictionary(true);
         public static function getResource(definition: String):DisplayObjectContainer
@@ -79,7 +80,7 @@ package com.agnither.utils.gui.components
         {
         }
         
-        protected function moveToMarker(name: String, time: Number = 0.4):void
+        public function moveToMarker(name: String, time: Number = defaultTween):void
         {
             var marker: AbstractComponent = getChild(name);
             if (marker == null)
@@ -89,6 +90,7 @@ package com.agnither.utils.gui.components
             
             if (time > 0)
             {
+                Starling.juggler.removeTweens(this);
                 Starling.juggler.tween(this, time, {"pivotX": marker.x, "pivotY": marker.y, transition: Transitions.EASE_OUT});
             } else {
                 pivotX = marker.x;
