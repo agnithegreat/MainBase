@@ -53,7 +53,6 @@ package
             _mobile = _ios || _android;
 
             Starling.multitouchEnabled = true;
-            Starling.handleLostContext = true;
 
             _starling = new Starling(_mainClass, stage, null, null, Context3DRenderMode.AUTO, [Context3DProfile.BASELINE_EXTENDED, Context3DProfile.BASELINE, Context3DProfile.BASELINE_CONSTRAINED]);
             handleResize(null);

@@ -4,8 +4,7 @@
 package com.agnither.utils.gui.components
 {
     import starling.text.TextField;
-    import starling.utils.HAlign;
-    import starling.utils.VAlign;
+    import starling.utils.Align;
 
     public class Label extends AbstractComponent
     {
@@ -40,37 +39,27 @@ package com.agnither.utils.gui.components
 
         public function set color(value: uint):void
         {
-            _label.color = value;
+            _label.format.color = value;
         }
         
         public function set vAlign(value: String):void
         {
-            _label.vAlign = value;
+            _label.format.verticalAlign = value;
         }
 
         public function set hAlign(value: String):void
         {
-            _label.hAlign = value;
+            _label.format.horizontalAlign = value;
         }
 
-        public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false, align: String = HAlign.CENTER)
+        public function Label(width:int, height:int, text:String, fontName:String, fontSize:Number = -1, color:uint = 0xFFFFFF, bold:Boolean = false, align: String = Align.CENTER)
         {
             _label = new TextField(width, height, text);
-
-            _label.fontName = fontName;
-            _label.fontSize = fontSize;
-            _label.color = color;
-            _label.bold = bold;
+            _label.format.setTo(fontName, fontSize, color, align, Align.TOP);
+            _label.format.bold = bold;
             _label.isHtmlText = true;
-
-            _label.vAlign = VAlign.TOP;
-            _label.hAlign = align;
             _label.autoScale = true;
             addChild(_label);
-
-            var gap: Number = height * 0.15;
-            _label.y -= gap;
-            _label.height += gap * 2;
         }
 
         public function setFilters(filters: Array, scale: Number = 1):void
@@ -92,7 +81,7 @@ package com.agnither.utils.gui.components
                     }
                 }
             }
-            _label.nativeFilters = filters;
+//            _label.nativeFilters = filters;
         }
 
         override public function destroy():void
