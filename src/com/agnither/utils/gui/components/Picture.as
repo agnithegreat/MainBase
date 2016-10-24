@@ -3,6 +3,9 @@
  */
 package com.agnither.utils.gui.components
 {
+    import flash.geom.Matrix;
+    import flash.geom.Rectangle;
+
     import starling.display.Image;
     import starling.textures.Texture;
     
@@ -23,11 +26,42 @@ package com.agnither.utils.gui.components
         {
             _image.color = value;
         }
+
+//        override public function set transformationMatrix(matrix: Matrix):void
+//        {
+//            x = matrix.tx;
+//            y = matrix.ty;
+//            width = _image.tW * matrix.a;
+//            height = _image.tH * matrix.d;
+//        }
+
+        override public function set width(value: Number):void
+        {
+            _image.width = value;
+        }
+        override public function get width():Number
+        {
+            return _image.width;
+        }
+
+        override public function set height(value: Number):void
+        {
+            _image.height = value;
+        }
+        override public function get height():Number
+        {
+            return _image.height;
+        }
     
-        public function Picture(texture: Texture)
+        public function Picture(texture: Texture, scaleGrid: Rectangle = null)
         {
             _image = new Image(texture);
             addChild(_image);
+            
+            if (scaleGrid)
+            {
+                _image.scale9Grid = scaleGrid;
+            }
         }
     
         override public function dispose():void

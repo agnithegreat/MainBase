@@ -7,7 +7,6 @@ package com.agnither.utils.gui
     import com.agnither.utils.gui.components.Button;
     import com.agnither.utils.gui.components.Label;
     import com.agnither.utils.gui.components.Picture;
-    import com.agnither.utils.gui.components.Scale9Picture;
     import com.agnither.utils.gui.components.SpriteAnimation;
 
     import flash.display.Bitmap;
@@ -19,6 +18,8 @@ package com.agnither.utils.gui
     import flash.text.TextField;
     import flash.utils.Dictionary;
     import flash.utils.getQualifiedClassName;
+
+    import starling.display.Image;
 
     import starling.textures.Texture;
 
@@ -57,12 +58,7 @@ package com.agnither.utils.gui
                 newChild = new Picture(Texture.fromColor(view.width * scale, view.height * scale, 0xFF000000));
             } else if (view is Bitmap)
             {
-                if (scale9GridTarget != null)
-                {
-                    newChild = new Scale9Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), getScaledRect(scale9GridTarget.scale9Grid, scale));
-                } else {
-                    newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)));
-                }
+                newChild = new Picture(Resources.getTexture(getQualifiedClassName((view as Bitmap).bitmapData)), scale9GridTarget != null ? getScaledRect(scale9GridTarget.scale9Grid, scale) : null);
                 (view as Bitmap).bitmapData.dispose();
             } else if (view is TextField)
             {
@@ -103,7 +99,7 @@ package com.agnither.utils.gui
 
             if (scale9GridTarget != null)
             {
-                if (newChild is Scale9Picture)
+                if (newChild is Image)
                 {
                     newChild.width = scale9GridTarget.width * scale;
                     newChild.height = scale9GridTarget.height * scale;

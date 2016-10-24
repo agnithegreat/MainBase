@@ -4,6 +4,7 @@
 package com.agnither.utils.gui.components
 {
     import starling.text.TextField;
+    import starling.text.TextFieldAutoSize;
     import starling.utils.Align;
 
     public class Label extends AbstractComponent
@@ -60,6 +61,12 @@ package com.agnither.utils.gui.components
             _label.isHtmlText = true;
             _label.autoScale = true;
             addChild(_label);
+        }
+        
+        public function setAutoSize():void
+        {
+            _label.isHtmlText = false;
+            _label.autoSize = TextFieldAutoSize.HORIZONTAL;
         }
 
         public function setFilters(filters: Array, scale: Number = 1):void
