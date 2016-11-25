@@ -10,10 +10,10 @@ package com.agnither.utils.gui.components
         public static const READY: String = "Screen.READY";
         
         public var resourceManager: ResourceManager;
-
-        public function Screen()
+        
+        public function Screen(tweenX: int, tweenY: int)
         {
-            super();
+            super(tweenX, tweenY);
         }
         
         public function init():void

@@ -3,6 +3,8 @@
  */
 package com.agnither.utils.gui.components
 {
+    import flash.geom.Point;
+
     public class Popup extends AbstractComponent
     {
         public static const SHOW: String = "Popup.SHOW";
@@ -20,12 +22,16 @@ package com.agnither.utils.gui.components
         {
             return _alive;
         }
+
+        public var tweenPosition: Point;
         
-        public function Popup()
+        public function Popup(tweenX: int, tweenY: int)
         {
             _alive = true;
             
             super();
+
+            tweenPosition = new Point(tweenX, tweenY);
         }
         
         final public function show():void
