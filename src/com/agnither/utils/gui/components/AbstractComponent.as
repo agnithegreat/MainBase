@@ -73,11 +73,24 @@ package com.agnither.utils.gui.components
         {
             _children = new Dictionary(true);
 
+            addEventListener(Event.ADDED_TO_STAGE, handleInit);
+            
             addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
+            addEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
         }
 
         protected function initialize():void
         {
+        }
+        
+        protected function activate():void
+        {
+            
+        }
+
+        protected function deactivate():void
+        {
+
         }
         
         public function moveToMarker(name: String, time: Number = defaultTween):void
@@ -98,11 +111,20 @@ package com.agnither.utils.gui.components
             }
         }
 
+        private function handleInit(e: Event):void
+        {
+            removeEventListener(Event.ADDED_TO_STAGE, handleInit);
+            initialize();
+        }
+        
         private function handleAddedToStage(e: Event):void
         {
-            removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
+            activate();
+        }
 
-            initialize();
+        private function handleRemovedFromStage(e: Event):void
+        {
+            deactivate();
         }
 
         public function createFromFlash(definition: String, scale: Number = 1):void
