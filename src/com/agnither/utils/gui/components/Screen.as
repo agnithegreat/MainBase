@@ -11,9 +11,9 @@ package com.agnither.utils.gui.components
         
         public var resourceManager: ResourceManager;
         
-        public function Screen(tweenX: int, tweenY: int)
+        public function Screen(tweenX: int, tweenY: int, closable: Boolean = true)
         {
-            super(tweenX, tweenY);
+            super(tweenX, tweenY, closable);
         }
         
         public function init():void

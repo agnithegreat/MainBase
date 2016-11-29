@@ -23,15 +23,27 @@ package com.agnither.utils.gui.components
             return _alive;
         }
 
+        private var _closable: Boolean;
+        public function get closable():Boolean
+        {
+            return _closable;
+        }
+
         public var tweenPosition: Point;
         
-        public function Popup(tweenX: int, tweenY: int)
+        public function Popup(tweenX: int, tweenY: int, closable: Boolean = true)
         {
             _alive = true;
+            _closable = closable;
             
             super();
 
             tweenPosition = new Point(tweenX, tweenY);
+        }
+        
+        public function tryClose():Boolean
+        {
+            return closable;
         }
         
         final public function show():void
