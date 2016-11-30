@@ -87,7 +87,7 @@ package com.agnither.utils.gui.components
         {
             
         }
-
+        
         protected function deactivate():void
         {
 

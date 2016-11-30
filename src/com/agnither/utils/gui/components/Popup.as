@@ -33,6 +33,10 @@ package com.agnither.utils.gui.components
 
             tweenPosition = new Point(tweenX, tweenY);
         }
+
+        public function setup():void
+        {
+        }
         
         public function tryClose():Boolean
         {
