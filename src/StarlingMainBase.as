@@ -96,6 +96,8 @@ package
             _starling.stage.stageHeight = _graphicsSize.height;
             ScreenUtil.viewport.width = _starling.stage.stageWidth;
             ScreenUtil.viewport.height = _starling.stage.stageHeight;
+            
+            resize();
         }
 
         protected function get starling():Starling
@@ -110,6 +112,11 @@ package
         protected function set showStats(value: Boolean):void
         {
             _starling.showStats = value;
+        }
+        
+        protected function resize():void
+        {
+            
         }
 
         protected function setSize(width: int, height: int):void
