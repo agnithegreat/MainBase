@@ -10,12 +10,12 @@ package com.agnither.utils.gui.components
     import flash.utils.getDefinitionByName;
 
     import starling.animation.Transitions;
-
     import starling.core.Starling;
-
     import starling.display.DisplayObject;
+    import starling.display.Image;
     import starling.display.Sprite;
     import starling.events.Event;
+    import starling.textures.RenderTexture;
 
     public class AbstractComponent extends Sprite
     {
@@ -52,6 +52,11 @@ package com.agnither.utils.gui.components
         }
 
         protected var _children: Dictionary;
+        
+        public function get initialized():Boolean
+        {
+            return hasEventListener(Event.ADDED_TO_STAGE, handleInit) == false;
+        }
 
         public function getChild(path: String):AbstractComponent
         {
@@ -130,6 +135,13 @@ package com.agnither.utils.gui.components
         public function createFromFlash(definition: String, scale: Number = 1):void
         {
             GUIFactory.createChildren(this, getResource(definition), scale, getManifest());
+        }
+
+        public function get snapshot():Image
+        {
+            var texture: RenderTexture = new RenderTexture(width || 1, height || 1);
+            texture.draw(this);
+            return new Image(texture);
         }
 
         override public function addChild(child: DisplayObject):DisplayObject
