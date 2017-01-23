@@ -74,6 +74,8 @@ package com.agnither.utils.gui.components
             return null;
         }
 
+        protected var _active: Boolean;
+
         public function AbstractComponent()
         {
             _children = new Dictionary(true);
@@ -125,11 +127,13 @@ package com.agnither.utils.gui.components
         private function handleAddedToStage(e: Event):void
         {
             activate();
+            _active = true;
         }
 
         private function handleRemovedFromStage(e: Event):void
         {
             deactivate();
+            _active = false;
         }
 
         public function createFromFlash(definition: String, scale: Number = 1):void

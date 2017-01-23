@@ -95,7 +95,7 @@ package com.agnither.utils.gui.components
 
         private function handleTouch(event: TouchEvent):void
         {
-            if (stage == null) return;
+            if (stage == null && _active) return;
 
             var touch: Touch = event.getTouch(stage);
             if (touch != null && touch.phase == TouchPhase.BEGAN)
