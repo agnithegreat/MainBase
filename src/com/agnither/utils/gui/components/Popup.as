@@ -4,6 +4,13 @@
 package com.agnither.utils.gui.components
 {
     import flash.geom.Point;
+    import flash.geom.Rectangle;
+
+    import starling.core.Starling;
+
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
 
     public class Popup extends AbstractComponent
     {
@@ -32,6 +39,8 @@ package com.agnither.utils.gui.components
             super();
 
             tweenPosition = new Point(tweenX, tweenY);
+
+            Starling.current.stage.addEventListener(TouchEvent.TOUCH, handleTouch);
         }
 
         public function setup():void
@@ -75,9 +84,28 @@ package com.agnither.utils.gui.components
         protected function hideHandler():void
         {
         }
+        
+        protected function cancelHandler():void
+        {
+        }
 
         protected function closeHandler():void
         {
+        }
+
+        private function handleTouch(event: TouchEvent):void
+        {
+            if (stage == null) return;
+
+            var touch: Touch = event.getTouch(stage);
+            if (touch != null && touch.phase == TouchPhase.BEGAN)
+            {
+                var bounds: Rectangle = getBounds(stage);
+                if (!bounds.contains(touch.globalX, touch.globalY) && tryClose())
+                {
+                    cancelHandler();
+                }
+            }
         }
     }
 }
