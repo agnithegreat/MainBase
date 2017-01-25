@@ -7,7 +7,6 @@ package com.agnither.utils.gui.components
     import flash.geom.Rectangle;
 
     import starling.core.Starling;
-
     import starling.events.Touch;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
@@ -29,12 +28,19 @@ package com.agnither.utils.gui.components
         {
             return _alive;
         }
+        
+        private var _sound: Boolean;
+        public function get sound():Boolean
+        {
+            return _sound;
+        }
 
         public var tweenPosition: Point;
         
-        public function Popup(tweenX: int, tweenY: int)
+        public function Popup(tweenX: int, tweenY: int, sound: Boolean = true)
         {
             _alive = true;
+            _sound = sound;
             
             super();
 
