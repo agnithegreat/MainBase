@@ -103,8 +103,8 @@ package com.agnither.utils.gui.components
         {
             if (stage == null && _active) return;
 
-            var touch: Touch = event.getTouch(stage);
-            if (touch != null && touch.phase == TouchPhase.BEGAN)
+            var touch: Touch = event.getTouch(stage, TouchPhase.BEGAN);
+            if (touch != null)
             {
                 var bounds: Rectangle = getBounds(stage);
                 if (!bounds.contains(touch.globalX, touch.globalY) && tryClose())
