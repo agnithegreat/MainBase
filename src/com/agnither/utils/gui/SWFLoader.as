@@ -8,7 +8,6 @@ package com.agnither.utils.gui
     import flash.events.Event;
     import flash.events.EventDispatcher;
     import flash.events.ProgressEvent;
-    import flash.filesystem.File;
     import flash.system.ApplicationDomain;
     import flash.system.LoaderContext;
 
@@ -44,7 +43,7 @@ package com.agnither.utils.gui
         public function addFile(filename: String):void
         {
             _files.push(filename);
-            _assets.enqueue(File.applicationDirectory.resolvePath(filename + ".swf"));
+            _assets.enqueue(filename + ".swf");
         }
 
         public function load():void
